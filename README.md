@@ -2,7 +2,7 @@
 
 A powerful image container for adding and removing images.
 
-功能简介：
+### 功能简介：
 
 1.支持添加、删除、默认图片的配置；
 
