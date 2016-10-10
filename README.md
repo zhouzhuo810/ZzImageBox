@@ -5,10 +5,15 @@ A powerful image container for adding and removing images.
 功能简介：
 
 1.支持添加、删除、默认图片的配置；
+
 2.支持最大行数限制；
+
 3.支持每行数量修改；
+
 4.支持添加、删除、图片点击回调接口。
+
 5.支持Box的添加(.addImage(String imagePath))和删除(.removeImage(int position))；
+
 6.支持加载本地图片(使用方法.addImage(String imagePath))；
 
 ### Gradle
