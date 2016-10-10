@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ZzImageBox">
+        <attr name="zib_max_line" format="integer" />
+        <attr name="zib_img_size_one_line" format="integer" />
+        <attr name="zib_img_padding" format="dimension|reference" />
+        <attr name="zib_img_default" format="integer" />
+        <attr name="zib_img_delete" format="integer" />
+        <attr name="zib_img_add" format="integer" />
+        <attr name="zib_img_deletable" format="boolean" />
+    </declare-styleable>
+</resources>

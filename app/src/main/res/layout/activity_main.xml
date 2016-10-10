@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <me.zhouzhuo.zzimagebox.ZzImageBox
+        android:id="@+id/zz_image_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:zib_img_padding="5dp"
+        app:zib_img_size_one_line="4"
+        app:zib_max_line="3"
+        app:zib_img_deletable="true"
+        />
+
+</RelativeLayout>
