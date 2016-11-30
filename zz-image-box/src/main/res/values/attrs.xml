@@ -8,5 +8,7 @@
         <attr name="zib_img_delete" format="color|reference" />
         <attr name="zib_img_add" format="color|reference" />
         <attr name="zib_img_deletable" format="boolean" />
+        <attr name="zib_left_margin" format="dimension|reference" />
+        <attr name="zib_right_margin" format="dimension|reference" />
     </declare-styleable>
 </resources>

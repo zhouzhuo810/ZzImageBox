@@ -27,6 +27,8 @@ public class ZzImageBox extends RecyclerView {
     private int mMaxLine;
     private int mImageSize;
     private int mPadding;
+    private int mLeftMargin;
+    private int mRightMargin;
     private int mDefaultPicId = -1;
     private int mDeletePicId = -1;
     private int mAddPicId = -1;
@@ -59,6 +61,8 @@ public class ZzImageBox extends RecyclerView {
 
     private void init(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ZzImageBox);
+        mLeftMargin = a.getDimensionPixelSize(R.styleable.ZzImageBox_zib_left_margin, 0);
+        mRightMargin = a.getDimensionPixelSize(R.styleable.ZzImageBox_zib_right_margin, 0);
         mMaxLine = a.getInteger(R.styleable.ZzImageBox_zib_max_line, DEFAULT_MAX_LINE);
         mImageSize = a.getInteger(R.styleable.ZzImageBox_zib_img_size_one_line, DEFAULT_IMAGE_SIZE);
         mPadding = a.getDimensionPixelSize(R.styleable.ZzImageBox_zib_img_padding, DEFAULT_IMAGE_PADDING);
@@ -76,7 +80,8 @@ public class ZzImageBox extends RecyclerView {
         mDatas = new ArrayList<>();
         setHasFixedSize(true);
         setLayoutManager(new GridLayoutManager(context, mImageSize));
-        mAdapter = new MyAdapter(context, mDatas, mImageSize, mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mPadding, mMaxLine, mClickListener);
+        setPadding(mLeftMargin, 0, mRightMargin, 0);
+        mAdapter = new MyAdapter(context, mDatas, mImageSize, mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mPadding, mLeftMargin, mRightMargin, mMaxLine, mClickListener);
         setAdapter(mAdapter);
 
         mAdapter.notifyDataSetChanged();
@@ -177,10 +182,12 @@ public class ZzImageBox extends RecyclerView {
         private int picWidth;
         private int maxLine;
         private int imageSize;
+        private int leftMargin;
+        private int rightMargin;
         private boolean lastOne;
         private OnImageClickListener listener;
 
-        public MyAdapter(Context context, List<ImageEntity> mDatas, int imageSize, int defaultPic, int deletePic, int addPic, boolean deletable, int padding, int maxLine, OnImageClickListener listener) {
+        public MyAdapter(Context context, List<ImageEntity> mDatas, int imageSize, int defaultPic, int deletePic, int addPic, boolean deletable, int padding, int leftMargin, int rightMargin, int maxLine, OnImageClickListener listener) {
             mInflater = LayoutInflater.from(context);
             this.mContext = context;
             this.mDatas = mDatas;
@@ -194,9 +201,11 @@ public class ZzImageBox extends RecyclerView {
             this.padding = padding;
             this.maxLine = maxLine;
             this.imageSize = imageSize;
+            this.leftMargin = leftMargin;
+            this.rightMargin = rightMargin;
             this.lastOne = false;
             this.listener = listener;
-            this.picWidth = getScreenWidth(context) / imageSize - padding * 2;
+            this.picWidth = (getScreenWidth(context) - leftMargin - rightMargin) / imageSize - padding * 2;
         }
 
         public void setmDatas(List<ImageEntity> mDatas) {
@@ -211,7 +220,7 @@ public class ZzImageBox extends RecyclerView {
         public void setImageSize(int imageSize) {
             this.imageSize = imageSize;
             if (imageSize != 0)
-                this.picWidth = getScreenWidth(mContext) / imageSize - padding * 2;
+                this.picWidth = (getScreenWidth(mContext) - leftMargin - rightMargin) / imageSize - padding * 2;
             else
                 this.picWidth = 0;
         }
