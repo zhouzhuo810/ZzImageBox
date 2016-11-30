@@ -16,6 +16,8 @@ A powerful image container for adding and removing images.
 
 6.支持加载本地图片(使用方法.addImage(String imagePath))；
 
+7.支持左右margin设置。
+
 ### Gradle
 
 
@@ -52,6 +54,8 @@ xml:
         android:id="@+id/zz_image_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:zib_left_margin="20dp"
+        app:zib_right_margin="20dp"
         app:zib_img_padding="5dp"
         app:zib_img_size_one_line="4"
         app:zib_max_line="3"
@@ -102,6 +106,8 @@ java:
         <attr name="zib_img_delete" format="color|reference" />
         <attr name="zib_img_add" format="color|reference" />
         <attr name="zib_img_deletable" format="boolean" />
+        <attr name="zib_left_margin" format="dimension|reference" />
+        <attr name="zib_right_margin" format="dimension|reference" />
     </declare-styleable>
 ```
 
@@ -115,3 +121,6 @@ java:
 | zib_img_delete |drawable|color | 删除图片资源id |
 | zib_img_add | drawable|color | 添加图片资源id |
 | zib_img_deletable |boolean | 是否显示删除图片 |
+| zib_left_margin| dimension | 控件距离屏幕左边距离 |
+| zib_right_margin| dimension | 控件距离屏幕右边距离 |
+
