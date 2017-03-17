@@ -22,7 +22,7 @@ A powerful image container for adding and removing images.
 
 
 ```
-compile 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.3'
+compile 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.4'
 ```
 
 
@@ -32,7 +32,7 @@ compile 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.3'
 <dependency>
   <groupId>me.zhouzhuo.zzimagebox</groupId>
   <artifactId>zz-image-box</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
   <type>pom</type>
 </dependency>
 ```
