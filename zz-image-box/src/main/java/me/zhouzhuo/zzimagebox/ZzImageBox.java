@@ -273,7 +273,7 @@ public class ZzImageBox extends RecyclerView {
                     @Override
                     public void onClick(View v) {
                         if (listener != null) {
-                            listener.onImageClick(holder.getAdapterPosition(), mDatas.get(holder.getAdapterPosition()).getPicFilePath());
+                            listener.onImageClick(holder.getAdapterPosition(), mDatas.get(holder.getAdapterPosition()).getPicFilePath(), holder.ivPic);
                         }
                     }
                 });
@@ -288,7 +288,7 @@ public class ZzImageBox extends RecyclerView {
     }
 
     public interface OnImageClickListener {
-        void onImageClick(int position, String filePath);
+        void onImageClick(int position, String filePath, ImageView iv);
 
         void onDeleteClick(int position, String filePath);
 
