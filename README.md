@@ -117,9 +117,9 @@ java:
 | zib_max_line | integer | 最大行数 |
 | zib_img_size_one_line | integer | 每行数量 |
 | zib_img_padding| dimension | 图片之间的间距 |
-| zib_img_default | drawable|color | 默认图片资源id |
-| zib_img_delete |drawable|color | 删除图片资源id |
-| zib_img_add | drawable|color | 添加图片资源id |
+| zib_img_default | drawable/color | 默认图片资源id |
+| zib_img_delete |drawable/color | 删除图片资源id |
+| zib_img_add | drawable/color | 添加图片资源id |
 | zib_img_deletable |boolean | 是否显示删除图片 |
 | zib_left_margin| dimension | 控件距离屏幕左边距离 |
 | zib_right_margin| dimension | 控件距离屏幕右边距离 |
