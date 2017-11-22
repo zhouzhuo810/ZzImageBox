@@ -52,6 +52,11 @@ compile 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.5'
 ## How to use it ?
 
 
+#### 注意：
+- 为了保证图片是正方形，需要保证ZzImageBox水平方向是填满屏幕的，也就是说父容器不能有padding和margin。
+- ZzImageBox的marginLeft属性使用zib_left_margin代替；
+- ZzImageBox的marginRight属性使用zib_right_margin代替；
+
 xml:
 
 ```xml
