@@ -22,9 +22,14 @@ A powerful image container for adding and removing images.
 
 
 ```
-compile 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.4'
+compile 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.5'
 ```
 
+内部依赖项说明：
+```
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+```
+也就是说添加ZzImageBox同时会添加RecyclerView包。
 
 ### Maven
 
@@ -71,6 +76,14 @@ java:
 
 ```java
         final ZzImageBox imageBox = (ZzImageBox) findViewById(R.id.zz_image_box);
+        //如果需要加载网络图片，添加此监听。
+        imageBox.setOnlineImageLoader(new ZzImageBox.OnlineImageLoader() {
+            @Override
+            public void onLoadImage(ImageView iv, String url) {
+                Log.d("ZzImageBox", "url=" + url);
+                Glide.with(MainActivity.this).load(url).into(iv);
+            }
+        });
         imageBox.setOnImageClickListener(new ZzImageBox.OnImageClickListener() {
             @Override
             public void onImageClick(int position, String filePath) {

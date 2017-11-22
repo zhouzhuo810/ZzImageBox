@@ -38,6 +38,8 @@ public class ZzImageBox extends RecyclerView {
     private static final int DEFAULT_IMAGE_SIZE = 4;
     private static final int DEFAULT_IMAGE_PADDING = 5;
 
+    private OnlineImageLoader onlineImageLoader;
+
     private List<ImageEntity> mDatas;
     private MyAdapter mAdapter;
 
@@ -58,6 +60,16 @@ public class ZzImageBox extends RecyclerView {
         init(context, attrs);
     }
 
+    public interface OnlineImageLoader {
+        void onLoadImage(ImageView iv, String url);
+    }
+
+    public void setOnlineImageLoader(OnlineImageLoader onlineImageLoader) {
+        this.onlineImageLoader = onlineImageLoader;
+        if (mAdapter != null) {
+            mAdapter.setImageLoader(onlineImageLoader);
+        }
+    }
 
     private void init(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ZzImageBox);
@@ -81,7 +93,7 @@ public class ZzImageBox extends RecyclerView {
         setHasFixedSize(true);
         setLayoutManager(new GridLayoutManager(context, mImageSize));
         setPadding(mLeftMargin, 0, mRightMargin, 0);
-        mAdapter = new MyAdapter(context, mDatas, mImageSize, mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mPadding, mLeftMargin, mRightMargin, mMaxLine, mClickListener);
+        mAdapter = new MyAdapter(context, mDatas, mImageSize, mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mPadding, mLeftMargin, mRightMargin, mMaxLine, mClickListener, onlineImageLoader);
         setAdapter(mAdapter);
 
         mAdapter.notifyDataSetChanged();
@@ -186,8 +198,9 @@ public class ZzImageBox extends RecyclerView {
         private int rightMargin;
         private boolean lastOne;
         private OnImageClickListener listener;
+        private OnlineImageLoader imageLoader;
 
-        public MyAdapter(Context context, List<ImageEntity> mDatas, int imageSize, int defaultPic, int deletePic, int addPic, boolean deletable, int padding, int leftMargin, int rightMargin, int maxLine, OnImageClickListener listener) {
+        public MyAdapter(Context context, List<ImageEntity> mDatas, int imageSize, int defaultPic, int deletePic, int addPic, boolean deletable, int padding, int leftMargin, int rightMargin, int maxLine, OnImageClickListener listener, OnlineImageLoader imageLoader) {
             mInflater = LayoutInflater.from(context);
             this.mContext = context;
             this.mDatas = mDatas;
@@ -205,7 +218,12 @@ public class ZzImageBox extends RecyclerView {
             this.rightMargin = rightMargin;
             this.lastOne = false;
             this.listener = listener;
+            this.imageLoader = imageLoader;
             this.picWidth = (getScreenWidth(context) - leftMargin - rightMargin) / imageSize - padding * 2;
+        }
+
+        public void setImageLoader(OnlineImageLoader imageLoader) {
+            this.imageLoader = imageLoader;
         }
 
         public void setmDatas(List<ImageEntity> mDatas) {
@@ -250,8 +268,19 @@ public class ZzImageBox extends RecyclerView {
                     }
                 });
             } else {
-                if (mDatas.get(holder.getAdapterPosition()).getPicFilePath() != null && mDatas.get(holder.getAdapterPosition()).getPicFilePath().length() != 0) {
-                    holder.ivPic.setImageURI(Uri.fromFile(new File(mDatas.get(holder.getAdapterPosition()).getPicFilePath())));
+                String url = mDatas.get(holder.getAdapterPosition()).getPicFilePath();
+
+                if (url != null && url.length() != 0) {
+                    if (url.startsWith("http")) {
+                        if (imageLoader != null) {
+                            //FIXME by zhouzhuo 时间：2017/11/22 上午11:33 修改内容：添加网络图片加载器
+                            imageLoader.onLoadImage(holder.ivPic, url);
+                        } else {
+                            holder.ivPic.setImageResource(defaultPic == -1 ? R.drawable.iv_default : defaultPic);
+                        }
+                    } else {
+                        holder.ivPic.setImageURI(Uri.fromFile(new File(url)));
+                    }
                 } else {
                     holder.ivPic.setImageResource(defaultPic == -1 ? R.drawable.iv_default : defaultPic);
                 }
