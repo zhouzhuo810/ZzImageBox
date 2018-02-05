@@ -16,7 +16,9 @@ A powerful image container for adding and removing images.
 
 6.支持加载本地图片(使用方法.addImage(String imagePath))；
 
-7.支持左右margin设置。
+7.支持加载网络图片(使用.setOnlineImageLoader());
+
+8.支持左右margin设置。
 
 ### Gradle
 
@@ -57,6 +59,8 @@ compile 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.5'
 - ZzImageBox的marginLeft属性使用zib_left_margin代替；
 - ZzImageBox的marginRight属性使用zib_right_margin代替；
 - 如果不需要显示添加图片，可以设置zib_img_add为透明颜色；
+- 加载网络图片必须添加`.setOnlineImageLoader();`方法，
+在`onLoadImage(ImageView iv, String url)`中自行使用Glide等框架加载；
 
 xml:
 
@@ -143,3 +147,21 @@ java:
 | zib_left_margin| dimension | 控件距离屏幕左边距离 |
 | zib_right_margin| dimension | 控件距离屏幕右边距离 |
 
+
+### License
+
+```
+Copyright © zhouzhuo810
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
