@@ -1,6 +1,6 @@
 # ZzImageBox
 
-A powerful image container for adding and removing images.
+:fire: A powerful image container for adding and removing images.
 
 ### 功能简介：
 
@@ -14,9 +14,10 @@ A powerful image container for adding and removing images.
 
 5.支持Box的添加(.addImage(String imagePath))和删除(.removeImage(int position))；
 
-6.支持加载本地图片(使用方法.addImage(String imagePath))；
+6.支持加载本地和网络图片(使用方法`.addImage(String url)`)；
 
-7.支持加载网络图片(使用.setOnlineImageLoader());
+7.支持自定义图片加载框架(使用`.setOnlineImageLoader(ZzImageBox.OnlineImageLoader listener)`,
+如果有网络图片必须使用此方法);
 
 8.支持左右margin设置。
 
