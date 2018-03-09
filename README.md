@@ -25,12 +25,12 @@
 
 
 ```
-compile 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.5'
+compile 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.6'
 ```
 
 内部依赖项说明：
 ```
-    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:recyclerview-v7:27.0.1'
 ```
 也就是说添加ZzImageBox同时会添加RecyclerView包。
 
@@ -48,7 +48,7 @@ compile 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.5'
 ## What does it look like?
 
 
-![zzimagebox](https://github.com/zhouzhuo810/ZzImageBox/blob/master/zzimagebox.gif)
+![zzimagebox](https://github.com/zhouzhuo810/ZzImageBox/blob/master/zz_image_box_demo.gif)
 
 
 
@@ -148,6 +148,32 @@ java:
 | zib_left_margin| dimension | 控件距离屏幕左边距离 |
 | zib_right_margin| dimension | 控件距离屏幕右边距离 |
 
+
+### 更新日志
+
+> v1.0.6
+
+- 支持动态设置左间距，使用`setLeftMarginInPixel()`方法；
+- 支持动态设置右边距，使用`setRightMarginInPixel()`方法；
+- 支持动态设置图片间距，使用`setImagePadding()`方法；
+- 支持动态设置单行图片数量，使用`setImageSizeOneLine()`方法；
+- 更新RecyclerView版本到`com.android.support:recyclerview-v7:27.0.1`。
+
+> v1.0.5
+
+- 支持加载网络图片；
+
+> v1.0.4
+
+- 点击图片返回图片对象，用于适应转场动画。
+
+> v1.0.3
+
+- 新增zib_left_margin和zib_right_margin设置左右外间距属性。
+
+> v1.0.2
+
+- 首次提交。
 
 ### License
 
