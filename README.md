@@ -25,7 +25,7 @@
 
 
 ```
-compile 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.6'
+    compile 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.6'
 ```
 
 内部依赖项说明：
