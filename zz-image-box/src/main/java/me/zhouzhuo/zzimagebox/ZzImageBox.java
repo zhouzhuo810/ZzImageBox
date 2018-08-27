@@ -3,6 +3,7 @@ package me.zhouzhuo.zzimagebox;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -229,7 +230,7 @@ public class ZzImageBox extends RecyclerView {
         private OnImageClickListener listener;
         private OnlineImageLoader imageLoader;
 
-        public MyAdapter(Context context, List<ImageEntity> mDatas, int imageSize, int defaultPic, int deletePic, int addPic, boolean deletable, int padding, int leftMargin, int rightMargin, int maxLine, OnImageClickListener listener, OnlineImageLoader imageLoader) {
+        MyAdapter(Context context, List<ImageEntity> mDatas, int imageSize, int defaultPic, int deletePic, int addPic, boolean deletable, int padding, int leftMargin, int rightMargin, int maxLine, OnImageClickListener listener, OnlineImageLoader imageLoader) {
             mInflater = LayoutInflater.from(context);
             this.mContext = context;
             this.mDatas = mDatas;
@@ -261,26 +262,26 @@ public class ZzImageBox extends RecyclerView {
             this.picWidth = (getScreenWidth(context) - leftMargin - rightMargin) / imageSize - padding * 2;
         }
 
-        public void setLeftMargin(int leftMargin) {
+        void setLeftMargin(int leftMargin) {
             this.leftMargin = leftMargin;
             this.picWidth = (getScreenWidth(mContext) - this.leftMargin - rightMargin) / imageSize - padding * 2;
         }
 
-        public void setRightMargin(int rightMargin) {
+        void setRightMargin(int rightMargin) {
             this.rightMargin = rightMargin;
             this.picWidth = (getScreenWidth(mContext) - leftMargin - this.rightMargin) / imageSize - padding * 2;
         }
 
-        public void setImagePadding(int padding) {
+        void setImagePadding(int padding) {
             this.padding = padding;
             this.picWidth = (getScreenWidth(mContext) - leftMargin - this.rightMargin) / imageSize - padding * 2;
         }
 
-        public void setImageLoader(OnlineImageLoader imageLoader) {
+        void setImageLoader(OnlineImageLoader imageLoader) {
             this.imageLoader = imageLoader;
         }
 
-        public void setmDatas(List<ImageEntity> mDatas) {
+        void setmDatas(List<ImageEntity> mDatas) {
             this.mDatas = mDatas;
             if (mDatas != null && mDatas.size() < maxLine * this.imageSize) {
                 ImageEntity entity = new ImageEntity();
@@ -297,14 +298,15 @@ public class ZzImageBox extends RecyclerView {
                 this.picWidth = 0;
         }
 
+        @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = mInflater.inflate(R.layout.zz_image_box_item, parent, false);
             return new ViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, final int position) {
+        public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
             ImageView iv = (ImageView) holder.itemView.findViewById(R.id.iv_pic);
             iv.setLayoutParams(new RelativeLayout.LayoutParams(picWidth, picWidth));
             ImageView ivDel = (ImageView) holder.itemView.findViewById(R.id.iv_delete);
@@ -385,7 +387,7 @@ public class ZzImageBox extends RecyclerView {
         private ImageView ivPic;
         private ImageView ivDelete;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             rootView = itemView;
             ivPic = (ImageView) itemView.findViewById(R.id.iv_pic);
