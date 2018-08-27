@@ -25,25 +25,10 @@
 
 
 ```
-    compile 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.6'
+    implementation 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.7'
+    implementation 'com.android.support:recyclerview-v7:27.1.1' //版本自己决定
 ```
 
-内部依赖项说明：
-```
-    compile 'com.android.support:recyclerview-v7:27.0.1'
-```
-也就是说添加ZzImageBox同时会添加RecyclerView包。
-
-### Maven
-
-```xml
-<dependency>
-  <groupId>me.zhouzhuo.zzimagebox</groupId>
-  <artifactId>zz-image-box</artifactId>
-  <version>1.0.4</version>
-  <type>pom</type>
-</dependency>
-```
 
 ## What does it look like?
 
@@ -150,6 +135,11 @@ java:
 
 
 ### 更新日志
+
+> v1.0.7
+
+- 修改依赖为`implementation`，使用时自行添加`recyclerview-v7`库。
+- 添加`ZzImageBox#addImageOnline(String url)`方法,使用此方法可强制使用网络加载;
 
 > v1.0.6
 

@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAddClick() {
                 //添加网络图片
-                imageBoxAddMode.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+                imageBoxAddMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
             }
         });
 
@@ -72,10 +72,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        imageBoxShowMode.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
-        imageBoxShowMode.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
-        imageBoxShowMode.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
-        imageBoxShowMode.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+        //因为有阿里OSS服务的需求，因此加了此方法，强制使用网络加载；imageBoxShowMode.addImage如果http开头会默认请求网络；否则默认为本地文件；
+        imageBoxShowMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+        imageBoxShowMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+        imageBoxShowMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+        imageBoxShowMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
 
         //点击监听
         imageBoxShowMode.setOnImageClickListener(new ZzImageBox.OnImageClickListener() {

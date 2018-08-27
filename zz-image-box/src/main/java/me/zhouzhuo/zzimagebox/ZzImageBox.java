@@ -105,31 +105,31 @@ public class ZzImageBox extends RecyclerView {
         mAdapter.listener = mClickListener;
     }
 
-    public void setmDefaultPicId(int mDefaultPicId) {
-        this.mDefaultPicId = mDefaultPicId;
-        mAdapter.defaultPic = mDefaultPicId;
+    public void setDefaultPicId(int defaultPicId) {
+        this.mDefaultPicId = defaultPicId;
+        mAdapter.defaultPic = defaultPicId;
         mAdapter.notifyDataSetChanged();
     }
 
-    public void setmDeletePicId(int mDeletePicId) {
-        this.mDeletePicId = mDeletePicId;
+    public void setDeletePicId(int deletePicId) {
+        this.mDeletePicId = deletePicId;
         mAdapter.deletePic = mDeletePicId;
         mAdapter.notifyDataSetChanged();
     }
 
-    public void setmAddPicId(int mAddPicId) {
-        this.mAddPicId = mAddPicId;
+    public void setAddPicId(int addPicId) {
+        this.mAddPicId = addPicId;
         mAdapter.addPic = mAddPicId;
         mAdapter.notifyDataSetChanged();
     }
 
-    public void setmDeletable(boolean mDeletable) {
-        this.mDeletable = mDeletable;
-        mAdapter.deletable = mDeletable;
+    public void setDeletable(boolean deletable) {
+        this.mDeletable = deletable;
+        mAdapter.deletable = deletable;
         mAdapter.notifyDataSetChanged();
     }
 
-    public void setmDatas(List<ImageEntity> mDatas) {
+    public void setDatas(List<ImageEntity> mDatas) {
         this.mDatas = mDatas;
         mAdapter.setmDatas(mDatas);
         mAdapter.notifyDataSetChanged();
@@ -152,13 +152,37 @@ public class ZzImageBox extends RecyclerView {
             if (mDatas.size() < mMaxLine * this.mImageSize) {
                 mAdapter.lastOne = false;
                 ImageEntity entity = new ImageEntity();
-                entity.setPicFilePath(imagePath);
+                entity.setPicUrl(imagePath);
                 entity.setAdd(false);
+                entity.setOnLine(false);
                 this.mDatas.add(this.mDatas.size() - 1, entity);
             } else {
                 mAdapter.lastOne = true;
                 this.mDatas.get(this.mDatas.size() - 1).setAdd(false);
-                this.mDatas.get(this.mDatas.size() - 1).setPicFilePath(imagePath);
+                this.mDatas.get(this.mDatas.size() - 1).setPicUrl(imagePath);
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Add a image online.
+     *
+     * @param imagePath the path of image.
+     */
+    public void addImageOnline(String imagePath) {
+        if (mDatas != null) {
+            if (mDatas.size() < mMaxLine * this.mImageSize) {
+                mAdapter.lastOne = false;
+                ImageEntity entity = new ImageEntity();
+                entity.setPicUrl(imagePath);
+                entity.setAdd(false);
+                entity.setOnLine(true);
+                this.mDatas.add(this.mDatas.size() - 1, entity);
+            } else {
+                mAdapter.lastOne = true;
+                this.mDatas.get(this.mDatas.size() - 1).setAdd(false);
+                this.mDatas.get(this.mDatas.size() - 1).setPicUrl(imagePath);
             }
         }
         mAdapter.notifyDataSetChanged();
@@ -298,10 +322,11 @@ public class ZzImageBox extends RecyclerView {
                     }
                 });
             } else {
-                String url = mDatas.get(holder.getAdapterPosition()).getPicFilePath();
+                String url = mDatas.get(holder.getAdapterPosition()).getPicUrl();
+                boolean forceOnLine = mDatas.get(holder.getAdapterPosition()).isOnLine();
 
                 if (url != null && url.length() != 0) {
-                    if (url.startsWith("http")) {
+                    if (url.startsWith("http") || forceOnLine) {
                         if (imageLoader != null) {
                             //FIXME by zhouzhuo 时间：2017/11/22 上午11:33 修改内容：添加网络图片加载器
                             imageLoader.onLoadImage(holder.ivPic, url);
@@ -324,7 +349,7 @@ public class ZzImageBox extends RecyclerView {
                     @Override
                     public void onClick(View v) {
                         if (listener != null) {
-                            listener.onDeleteClick(holder.getAdapterPosition(), mDatas.get(holder.getAdapterPosition()).getPicFilePath());
+                            listener.onDeleteClick(holder.getAdapterPosition(), mDatas.get(holder.getAdapterPosition()).getPicUrl());
                         }
                     }
                 });
@@ -332,7 +357,7 @@ public class ZzImageBox extends RecyclerView {
                     @Override
                     public void onClick(View v) {
                         if (listener != null) {
-                            listener.onImageClick(holder.getAdapterPosition(), mDatas.get(holder.getAdapterPosition()).getPicFilePath(), holder.ivPic);
+                            listener.onImageClick(holder.getAdapterPosition(), mDatas.get(holder.getAdapterPosition()).getPicUrl(), holder.ivPic);
                         }
                     }
                 });
@@ -369,8 +394,9 @@ public class ZzImageBox extends RecyclerView {
     }
 
     private static class ImageEntity {
-        private String picFilePath;
+        private String picUrl;
         private boolean isAdd;
+        private boolean onLine;
 
         public boolean isAdd() {
             return isAdd;
@@ -380,14 +406,21 @@ public class ZzImageBox extends RecyclerView {
             isAdd = add;
         }
 
-        public void setPicFilePath(String picFilePath) {
-            this.picFilePath = picFilePath;
+        public void setPicUrl(String picUrl) {
+            this.picUrl = picUrl;
         }
 
-        public String getPicFilePath() {
-            return picFilePath;
+        public String getPicUrl() {
+            return picUrl;
         }
 
+        public boolean isOnLine() {
+            return onLine;
+        }
+
+        public void setOnLine(boolean onLine) {
+            this.onLine = onLine;
+        }
     }
 
     /**
@@ -400,7 +433,7 @@ public class ZzImageBox extends RecyclerView {
         if (mDatas != null) {
             for (ImageEntity mData : mDatas) {
                 if (!mData.isAdd) {
-                    allImages.add(mData.getPicFilePath());
+                    allImages.add(mData.getPicUrl());
                 }
             }
         }
@@ -429,7 +462,7 @@ public class ZzImageBox extends RecyclerView {
      */
     public String getImagePathAt(int position) {
         if (mDatas != null && mDatas.size() > position) {
-            return mDatas.get(position).getPicFilePath();
+            return mDatas.get(position).getPicUrl();
         }
         return null;
     }
