@@ -506,7 +506,7 @@ public class ZzImageBox extends RecyclerView {
      * @return paths of images
      */
     public List<String> getAllImages() {
-        List<String> allImages = new ArrayList<>();
+        final List<String> allImages = new ArrayList<>();
         if (mDatas != null) {
             for (ImageEntity mData : mDatas) {
                 if (!mData.isAdd) {
@@ -515,6 +515,57 @@ public class ZzImageBox extends RecyclerView {
             }
         }
         return allImages;
+    }
+
+    /**
+     * Get all custom paths
+     *
+     * @return Custom path
+     */
+    public List<String> getAllRealPath() {
+        final List<String> allImages = new ArrayList<>();
+        if (mDatas != null) {
+            for (ImageEntity mData : mDatas) {
+                if (!mData.isAdd) {
+                    allImages.add(mData.getRealPath());
+                }
+            }
+        }
+        return allImages;
+    }
+
+    /**
+     * Get all custom types
+     *
+     * @return Custom type
+     */
+    public List<Integer> getAllRealType() {
+        final List<Integer> types = new ArrayList<>();
+        if (mDatas != null) {
+            for (ImageEntity mData : mDatas) {
+                if (!mData.isAdd) {
+                    types.add(mData.getRealType());
+                }
+            }
+        }
+        return types;
+    }
+
+    /**
+     * Get all entity classes
+     *
+     * @return Entity class
+     */
+    public List<ImageEntity> getAllEntity() {
+        final List<ImageEntity> entities = new ArrayList<>();
+        if (mDatas != null) {
+            for (ImageEntity mData : mDatas) {
+                if (!mData.isAdd) {
+                    entities.add(mData);
+                }
+            }
+        }
+        return entities;
     }
 
     /**
@@ -561,6 +612,44 @@ public class ZzImageBox extends RecyclerView {
         return null;
     }
 
+    /**
+     * Return the custom path of position.
+     *
+     * @param position position.
+     * @return custom path.
+     */
+    public String getRealPathAt(int position) {
+        if (mDatas != null && mDatas.size() > position) {
+            return mDatas.get(position).getRealPath();
+        }
+        return null;
+    }
+
+    /**
+     * Return the custom type of position.
+     *
+     * @param position position.
+     * @return custom type, default = 0.
+     */
+    public int getRealTypeAt(int position) {
+        if (mDatas != null && mDatas.size() > position) {
+            return mDatas.get(position).getRealType();
+        }
+        return 0;
+    }
+
+    /**
+     * Return the custom type of position.
+     *
+     * @param position position.
+     * @return custom type, default = 0.
+     */
+    public ImageEntity getEntityAt(int position) {
+        if (mDatas != null && mDatas.size() > position) {
+            return mDatas.get(position);
+        }
+        return null;
+    }
 
     /**
      * Set the max image size of one line.

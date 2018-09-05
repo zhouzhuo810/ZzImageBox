@@ -25,7 +25,7 @@
 
 
 ```
-    implementation 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.8'
+    implementation 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.9'
     implementation 'com.android.support:recyclerview-v7:27.1.1' //版本自己决定
 ```
 
@@ -135,6 +135,14 @@ java:
 
 
 ### 更新日志
+
+> v1.0.9
+
+- 添加`ZzImageBox#getAllRealPath()`、
+`ZzImageBox#getAllRealType`、`ZzImageBox#getAllEntity`
+、`ZzImageBox#getRealPathAt`、`ZzImageBox#getRealTypeAt`
+、`ZzImageBox#getEntityAt`等方法。
+
 
 > v1.0.8
 

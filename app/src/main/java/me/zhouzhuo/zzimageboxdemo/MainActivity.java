@@ -14,7 +14,8 @@ import com.bumptech.glide.Glide;
 
 import me.zhouzhuo.zzimagebox.ZzImageBox;
 
-public class MainActivity extends AppCompatActivity {
+public class
+MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
