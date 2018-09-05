@@ -38,12 +38,13 @@ public class MainActivity extends AppCompatActivity {
         //点击监听
         imageBoxAddMode.setOnImageClickListener(new ZzImageBox.OnImageClickListener() {
             @Override
-            public void onImageClick(int position, String filePath, ImageView iv) {
-                Toast.makeText(MainActivity.this, "你点击了+" + position + "的图片:url=" + filePath, Toast.LENGTH_SHORT).show();
+            public void onImageClick(int position, String filePath, String tag, int type, ImageView iv) {
+                Toast.makeText(MainActivity.this, "你点击了+" + position + "的图片:url=" + filePath + ", tag=" + tag, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onDeleteClick(int position, String filePath) {
+            public void onDeleteClick(int position, String filePath, String tag, int type) {
+                Toast.makeText(MainActivity.this.getApplicationContext(), "tag=" + tag + ", type=" + type, Toast.LENGTH_SHORT).show();
                 //移除position位置的图片
                 imageBoxAddMode.removeImage(position);
             }
@@ -51,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAddClick() {
                 //添加网络图片
-                imageBoxAddMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+//                imageBoxAddMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+                imageBoxAddMode.addImageOnlineWithRealPathAndType("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg", "tag" + imageBoxAddMode.getCount(), imageBoxAddMode.getCount());
             }
         });
 
@@ -81,12 +83,12 @@ public class MainActivity extends AppCompatActivity {
         //点击监听
         imageBoxShowMode.setOnImageClickListener(new ZzImageBox.OnImageClickListener() {
             @Override
-            public void onImageClick(int position, String filePath, ImageView iv) {
-                Toast.makeText(MainActivity.this, "你点击了+" + position + "的图片:url=" + filePath, Toast.LENGTH_SHORT).show();
+            public void onImageClick(int position, String filePath, String tag, int type, ImageView iv) {
+                Toast.makeText(MainActivity.this, "你点击了+" + position + "的图片:url=" + filePath + ", tag=" + tag, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onDeleteClick(int position, String filePath) {
+            public void onDeleteClick(int position, String filePath, String tag, int type) {
             }
 
             @Override

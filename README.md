@@ -25,7 +25,7 @@
 
 
 ```
-    implementation 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.7'
+    implementation 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.8'
     implementation 'com.android.support:recyclerview-v7:27.1.1' //版本自己决定
 ```
 
@@ -80,24 +80,24 @@ java:
                 Glide.with(MainActivity.this).load(url).into(iv);
             }
         });
-        imageBox.setOnImageClickListener(new ZzImageBox.OnImageClickListener() {
+        imageBoxAddMode.setOnImageClickListener(new ZzImageBox.OnImageClickListener() {
             @Override
-            public void onImageClick(int position, String filePath) {
-                Log.d("ZzImageBox", "image clicked:" + position + "," + filePath);
+            public void onImageClick(int position, String filePath, String tag, int type, ImageView iv) {
+                Toast.makeText(MainActivity.this, "你点击了+" + position + "的图片:url=" + filePath + ", tag=" + tag, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onDeleteClick(int position, String filePath) {
-                imageBox.removeImage(position);
-                Log.d("ZzImageBox", "delete clicked:" + position + "," + filePath);
-                Log.d("ZzImageBox", "all images\n"+imageBox.getAllImages().toString());
+            public void onDeleteClick(int position, String filePath, String tag, int type) {
+                Toast.makeText(MainActivity.this.getApplicationContext(), "tag=" + tag + ", type=" + type, Toast.LENGTH_SHORT).show();
+                //移除position位置的图片
+                imageBoxAddMode.removeImage(position);
             }
 
             @Override
             public void onAddClick() {
-                imageBox.addImage(null);
-                Log.d("ZzImageBox", "add clicked");
-                Log.d("ZzImageBox", "all images\n"+imageBox.getAllImages().toString());
+                //添加网络图片
+//                imageBoxAddMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+                imageBoxAddMode.addImageOnlineWithRealPathAndType("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg", "tag" + imageBoxAddMode.getCount(), imageBoxAddMode.getCount());
             }
         });
 
@@ -135,6 +135,13 @@ java:
 
 
 ### 更新日志
+
+> v1.0.8
+
+- 添加`ZzImageBox#addImageWithRealPathAndType(@NonNull String imagePath, String realPath, int realType)`方法,使用此方法添加一个的自定义的路径和类型
+,比如缩略图对应的原图、视频的地址，缩略图对应的文件类型是图片还是视频;
+- `setOnImageClickListener`接口有所调整；
+
 
 > v1.0.7
 

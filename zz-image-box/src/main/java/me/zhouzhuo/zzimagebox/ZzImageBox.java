@@ -148,7 +148,7 @@ public class ZzImageBox extends RecyclerView {
      *
      * @param imagePath the path of image.
      */
-    public void addImage(String imagePath) {
+    public void addImage(@NonNull String imagePath) {
         if (mDatas != null) {
             if (mDatas.size() < mMaxLine * this.mImageSize) {
                 mAdapter.lastOne = false;
@@ -167,11 +167,38 @@ public class ZzImageBox extends RecyclerView {
     }
 
     /**
+     * Add a image with a custom path and type.
+     *
+     * @param imagePath the path of image.
+     */
+    public void addImageWithRealPathAndType(@NonNull String imagePath, String realPath, int realType) {
+        if (mDatas != null) {
+            if (mDatas.size() < mMaxLine * this.mImageSize) {
+                mAdapter.lastOne = false;
+                ImageEntity entity = new ImageEntity();
+                entity.setPicUrl(imagePath);
+                entity.setAdd(false);
+                entity.setRealPath(realPath);
+                entity.setRealType(realType);
+                entity.setOnLine(false);
+                this.mDatas.add(this.mDatas.size() - 1, entity);
+            } else {
+                mAdapter.lastOne = true;
+                this.mDatas.get(this.mDatas.size() - 1).setAdd(false);
+                this.mDatas.get(this.mDatas.size() - 1).setRealPath(realPath);
+                this.mDatas.get(this.mDatas.size() - 1).setRealType(realType);
+                this.mDatas.get(this.mDatas.size() - 1).setPicUrl(imagePath);
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    /**
      * Add a image online.
      *
      * @param imagePath the path of image.
      */
-    public void addImageOnline(String imagePath) {
+    public void addImageOnline(@NonNull String imagePath) {
         if (mDatas != null) {
             if (mDatas.size() < mMaxLine * this.mImageSize) {
                 mAdapter.lastOne = false;
@@ -183,6 +210,35 @@ public class ZzImageBox extends RecyclerView {
             } else {
                 mAdapter.lastOne = true;
                 this.mDatas.get(this.mDatas.size() - 1).setAdd(false);
+                this.mDatas.get(this.mDatas.size() - 1).setPicUrl(imagePath);
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Add a image online with custom path and custom type.
+     *
+     * @param imagePath the path of image.
+     * @param realPath  your custom path.
+     * @param realType  your custom type.
+     */
+    public void addImageOnlineWithRealPathAndType(@NonNull String imagePath, String realPath, int realType) {
+        if (mDatas != null) {
+            if (mDatas.size() < mMaxLine * this.mImageSize) {
+                mAdapter.lastOne = false;
+                ImageEntity entity = new ImageEntity();
+                entity.setPicUrl(imagePath);
+                entity.setRealPath(realPath);
+                entity.setRealType(realType);
+                entity.setAdd(false);
+                entity.setOnLine(true);
+                this.mDatas.add(this.mDatas.size() - 1, entity);
+            } else {
+                mAdapter.lastOne = true;
+                this.mDatas.get(this.mDatas.size() - 1).setAdd(false);
+                this.mDatas.get(this.mDatas.size() - 1).setRealPath(realPath);
+                this.mDatas.get(this.mDatas.size() - 1).setRealType(realType);
                 this.mDatas.get(this.mDatas.size() - 1).setPicUrl(imagePath);
             }
         }
@@ -351,7 +407,7 @@ public class ZzImageBox extends RecyclerView {
                     @Override
                     public void onClick(View v) {
                         if (listener != null) {
-                            listener.onDeleteClick(holder.getAdapterPosition(), mDatas.get(holder.getAdapterPosition()).getPicUrl());
+                            listener.onDeleteClick(holder.getAdapterPosition(), mDatas.get(holder.getAdapterPosition()).getPicUrl(), mDatas.get(holder.getAdapterPosition()).getRealPath(), mDatas.get(holder.getAdapterPosition()).getRealType());
                         }
                     }
                 });
@@ -359,7 +415,7 @@ public class ZzImageBox extends RecyclerView {
                     @Override
                     public void onClick(View v) {
                         if (listener != null) {
-                            listener.onImageClick(holder.getAdapterPosition(), mDatas.get(holder.getAdapterPosition()).getPicUrl(), holder.ivPic);
+                            listener.onImageClick(holder.getAdapterPosition(), mDatas.get(holder.getAdapterPosition()).getPicUrl(), mDatas.get(holder.getAdapterPosition()).getRealPath(), mDatas.get(holder.getAdapterPosition()).getRealType(), holder.ivPic);
                         }
                     }
                 });
@@ -374,9 +430,10 @@ public class ZzImageBox extends RecyclerView {
     }
 
     public interface OnImageClickListener {
-        void onImageClick(int position, String filePath, ImageView iv);
 
-        void onDeleteClick(int position, String filePath);
+        void onImageClick(int position, String url, String realPath, int realType, ImageView iv);
+
+        void onDeleteClick(int position, String url, String realPath, int realType);
 
         void onAddClick();
     }
@@ -399,6 +456,8 @@ public class ZzImageBox extends RecyclerView {
         private String picUrl;
         private boolean isAdd;
         private boolean onLine;
+        private String realPath;
+        private int realType;
 
         public boolean isAdd() {
             return isAdd;
@@ -423,6 +482,22 @@ public class ZzImageBox extends RecyclerView {
         public void setOnLine(boolean onLine) {
             this.onLine = onLine;
         }
+
+        public String getRealPath() {
+            return realPath;
+        }
+
+        public void setRealPath(String realPath) {
+            this.realPath = realPath;
+        }
+
+        public int getRealType() {
+            return realType;
+        }
+
+        public void setRealType(int realType) {
+            this.realType = realType;
+        }
     }
 
     /**
@@ -440,6 +515,23 @@ public class ZzImageBox extends RecyclerView {
             }
         }
         return allImages;
+    }
+
+    /**
+     * 获取图片数量
+     *
+     * @return Total number of images.
+     */
+    public int getCount() {
+        int count = 0;
+        if (mDatas != null) {
+            for (ImageEntity mData : mDatas) {
+                if (!mData.isAdd) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     /**
