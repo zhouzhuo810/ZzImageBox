@@ -136,6 +136,10 @@ java:
 
 ### 更新日志
 
+> v1.1.0
+
+- 修改ImageEntity的private为public；
+
 > v1.0.9
 
 - 添加`ZzImageBox#getAllRealPath()`、

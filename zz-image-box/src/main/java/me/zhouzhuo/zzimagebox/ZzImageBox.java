@@ -452,7 +452,7 @@ public class ZzImageBox extends RecyclerView {
         }
     }
 
-    private static class ImageEntity {
+    public static class ImageEntity {
         private String picUrl;
         private boolean isAdd;
         private boolean onLine;
