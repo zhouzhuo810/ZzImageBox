@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "1.1.0"
+version = "1.1.1"
 
 android {
     resourcePrefix "zz_" //随意填写
@@ -13,8 +13,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 10
-        versionName "1.9"
+        versionCode 11
+        versionName "2.0"
     }
     buildTypes {
         release {
@@ -111,9 +111,9 @@ bintray {
         issueTrackerUrl = 'https://github.com/zhouzhuo810/ZzImageBox/issues'
         publicDownloadNumbers = true
         version {
-            name = '1.1.0'
+            name = '1.1.1'
             desc = 'zz-image-box release'
-            vcsTag = '1.1.0'
+            vcsTag = '1.1.1'
             attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
         }
     }

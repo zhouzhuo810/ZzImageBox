@@ -8,11 +8,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -25,7 +24,7 @@ import java.util.List;
  * Created by zz on 2016/10/9.
  */
 public class ZzImageBox extends RecyclerView {
-
+    
     private int mMaxLine;
     private int mImageSize;
     private int mPadding;
@@ -39,41 +38,44 @@ public class ZzImageBox extends RecyclerView {
     private static final int DEFAULT_MAX_LINE = 1;
     private static final int DEFAULT_IMAGE_SIZE = 4;
     private static final int DEFAULT_IMAGE_PADDING = 5;
-
+    
     private OnlineImageLoader onlineImageLoader;
-
+    
     private List<ImageEntity> mDatas;
     private MyAdapter mAdapter;
-
+    
+    private Context context;
+    
     private OnImageClickListener mClickListener;
-
+    
     public ZzImageBox(Context context) {
         super(context);
         init(context, null);
     }
-
+    
     public ZzImageBox(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
-
+    
     public ZzImageBox(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs);
     }
-
+    
     public interface OnlineImageLoader {
         void onLoadImage(ImageView iv, String url);
     }
-
+    
     public void setOnlineImageLoader(OnlineImageLoader onlineImageLoader) {
         this.onlineImageLoader = onlineImageLoader;
         if (mAdapter != null) {
             mAdapter.setImageLoader(onlineImageLoader);
         }
     }
-
+    
     private void init(Context context, AttributeSet attrs) {
+        this.context = context;
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ZzImageBox);
         mLeftMargin = a.getDimensionPixelSize(R.styleable.ZzImageBox_zib_left_margin, 0);
         mRightMargin = a.getDimensionPixelSize(R.styleable.ZzImageBox_zib_right_margin, 0);
@@ -85,64 +87,69 @@ public class ZzImageBox extends RecyclerView {
         mAddPicId = a.getResourceId(R.styleable.ZzImageBox_zib_img_add, -1);
         mDeletable = a.getBoolean(R.styleable.ZzImageBox_zib_img_deletable, DEFAULT_DELETABLE);
         a.recycle();
-
+        
         initData(context);
     }
-
-
+    
+    
     private void initData(Context context) {
         mDatas = new ArrayList<>();
         setHasFixedSize(true);
         setLayoutManager(new GridLayoutManager(context, mImageSize));
         setPadding(mLeftMargin, 0, mRightMargin, 0);
-        mAdapter = new MyAdapter(context, mDatas, mImageSize, mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mPadding, mLeftMargin, mRightMargin, mMaxLine, mClickListener, onlineImageLoader);
+        mAdapter = new MyAdapter(context, getBoxWidth(), mDatas, mImageSize, mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mPadding, mLeftMargin, mRightMargin, mMaxLine, mClickListener, onlineImageLoader);
         setAdapter(mAdapter);
-
+        
         mAdapter.notifyDataSetChanged();
     }
-
+    
     public void setOnImageClickListener(OnImageClickListener mClickListener) {
         this.mClickListener = mClickListener;
         mAdapter.listener = mClickListener;
     }
-
+    
     public void setDefaultPicId(int defaultPicId) {
         this.mDefaultPicId = defaultPicId;
         mAdapter.defaultPic = defaultPicId;
         mAdapter.notifyDataSetChanged();
     }
-
+    
     public void setDeletePicId(int deletePicId) {
         this.mDeletePicId = deletePicId;
         mAdapter.deletePic = mDeletePicId;
         mAdapter.notifyDataSetChanged();
     }
-
+    
     public void setAddPicId(int addPicId) {
         this.mAddPicId = addPicId;
         mAdapter.addPic = mAddPicId;
         mAdapter.notifyDataSetChanged();
     }
-
+    
     public void setDeletable(boolean deletable) {
         this.mDeletable = deletable;
         mAdapter.deletable = deletable;
         mAdapter.notifyDataSetChanged();
     }
-
+    
     public void setDatas(List<ImageEntity> mDatas) {
         this.mDatas = mDatas;
         mAdapter.setmDatas(mDatas);
         mAdapter.notifyDataSetChanged();
     }
-
-    public static int getScreenWidth(Context context) {
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        windowManager.getDefaultDisplay().getMetrics(outMetrics);
-        return outMetrics.widthPixels;
+    //
+    //    public static int getScreenWidth(Context context) {
+    //        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+    //        DisplayMetrics outMetrics = new DisplayMetrics();
+    //        windowManager.getDefaultDisplay().getMetrics(outMetrics);
+    //        return outMetrics.widthPixels;
+    //    }
+    
+    public int getBoxWidth() {
+        return getMeasuredWidth();
     }
-
+    
+    
     /**
      * Add a image.
      *
@@ -165,7 +172,7 @@ public class ZzImageBox extends RecyclerView {
         }
         mAdapter.notifyDataSetChanged();
     }
-
+    
     /**
      * Add a image with a custom path and type.
      *
@@ -192,7 +199,7 @@ public class ZzImageBox extends RecyclerView {
         }
         mAdapter.notifyDataSetChanged();
     }
-
+    
     /**
      * Add a image online.
      *
@@ -215,7 +222,7 @@ public class ZzImageBox extends RecyclerView {
         }
         mAdapter.notifyDataSetChanged();
     }
-
+    
     /**
      * Add a image online with custom path and custom type.
      *
@@ -244,7 +251,7 @@ public class ZzImageBox extends RecyclerView {
         }
         mAdapter.notifyDataSetChanged();
     }
-
+    
     /**
      * Remove the image at position.
      *
@@ -267,7 +274,18 @@ public class ZzImageBox extends RecyclerView {
         }
         mAdapter.notifyDataSetChanged();
     }
-
+    
+    
+    @Override
+    protected void onMeasure(int widthSpec, int heightSpec) {
+        super.onMeasure(widthSpec, heightSpec);
+        if (mAdapter != null && mAdapter.boxWidth == 0) {
+            mAdapter.boxWidth = getBoxWidth();
+            mAdapter.setImageSize(mAdapter.imageSize);
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+    
     private static class MyAdapter extends RecyclerView.Adapter<ViewHolder> {
         private LayoutInflater mInflater;
         private Context mContext;
@@ -276,6 +294,7 @@ public class ZzImageBox extends RecyclerView {
         private int deletePic;
         private int addPic;
         private boolean deletable;
+        private int boxWidth;
         private int padding;
         private int picWidth;
         private int maxLine;
@@ -285,8 +304,8 @@ public class ZzImageBox extends RecyclerView {
         private boolean lastOne;
         private OnImageClickListener listener;
         private OnlineImageLoader imageLoader;
-
-        MyAdapter(Context context, List<ImageEntity> mDatas, int imageSize, int defaultPic, int deletePic, int addPic, boolean deletable, int padding, int leftMargin, int rightMargin, int maxLine, OnImageClickListener listener, OnlineImageLoader imageLoader) {
+        
+        MyAdapter(Context context, int boxWidth, List<ImageEntity> mDatas, int imageSize, int defaultPic, int deletePic, int addPic, boolean deletable, int padding, int leftMargin, int rightMargin, int maxLine, OnImageClickListener listener, OnlineImageLoader imageLoader) {
             mInflater = LayoutInflater.from(context);
             this.mContext = context;
             this.mDatas = mDatas;
@@ -303,6 +322,7 @@ public class ZzImageBox extends RecyclerView {
                     this.mDatas.add(entity);
                 }
             }
+            this.boxWidth = boxWidth;
             this.defaultPic = defaultPic;
             this.deletePic = deletePic;
             this.addPic = addPic;
@@ -315,28 +335,28 @@ public class ZzImageBox extends RecyclerView {
             this.lastOne = false;
             this.listener = listener;
             this.imageLoader = imageLoader;
-            this.picWidth = (getScreenWidth(context) - leftMargin - rightMargin) / imageSize - padding * 2;
+            this.picWidth = (boxWidth - leftMargin - rightMargin) / imageSize - padding * 2;
         }
-
+        
         void setLeftMargin(int leftMargin) {
             this.leftMargin = leftMargin;
-            this.picWidth = (getScreenWidth(mContext) - this.leftMargin - rightMargin) / imageSize - padding * 2;
+            this.picWidth = (boxWidth - this.leftMargin - rightMargin) / imageSize - padding * 2;
         }
-
+        
         void setRightMargin(int rightMargin) {
             this.rightMargin = rightMargin;
-            this.picWidth = (getScreenWidth(mContext) - leftMargin - this.rightMargin) / imageSize - padding * 2;
+            this.picWidth = (boxWidth - leftMargin - this.rightMargin) / imageSize - padding * 2;
         }
-
+        
         void setImagePadding(int padding) {
             this.padding = padding;
-            this.picWidth = (getScreenWidth(mContext) - leftMargin - this.rightMargin) / imageSize - padding * 2;
+            this.picWidth = (boxWidth - leftMargin - this.rightMargin) / imageSize - padding * 2;
         }
-
+        
         void setImageLoader(OnlineImageLoader imageLoader) {
             this.imageLoader = imageLoader;
         }
-
+        
         void setmDatas(List<ImageEntity> mDatas) {
             this.mDatas = mDatas;
             if (mDatas != null && mDatas.size() < maxLine * this.imageSize) {
@@ -345,22 +365,22 @@ public class ZzImageBox extends RecyclerView {
                 this.mDatas.add(entity);
             }
         }
-
+        
         public void setImageSize(int imageSize) {
             this.imageSize = imageSize;
             if (imageSize != 0)
-                this.picWidth = (getScreenWidth(mContext) - leftMargin - rightMargin) / imageSize - padding * 2;
+                this.picWidth = (boxWidth - leftMargin - rightMargin) / imageSize - padding * 2;
             else
                 this.picWidth = 0;
         }
-
+        
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = mInflater.inflate(R.layout.zz_image_box_item, parent, false);
             return new ViewHolder(itemView);
         }
-
+        
         @Override
         public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
             ImageView iv = (ImageView) holder.itemView.findViewById(R.id.iv_pic);
@@ -382,7 +402,7 @@ public class ZzImageBox extends RecyclerView {
             } else {
                 String url = mDatas.get(holder.getAdapterPosition()).getPicUrl();
                 boolean forceOnLine = mDatas.get(holder.getAdapterPosition()).isOnLine();
-
+                
                 if (url != null && url.length() != 0) {
                     if (url.startsWith("http") || forceOnLine) {
                         if (imageLoader != null) {
@@ -422,28 +442,28 @@ public class ZzImageBox extends RecyclerView {
             }
             holder.rootView.setPadding(padding, padding, padding, padding);
         }
-
+        
         @Override
         public int getItemCount() {
             return mDatas == null ? 0 : mDatas.size();
         }
     }
-
+    
     public interface OnImageClickListener {
-
+        
         void onImageClick(int position, String url, String realPath, int realType, ImageView iv);
-
+        
         void onDeleteClick(int position, String url, String realPath, int realType);
-
+        
         void onAddClick();
     }
-
+    
     private static class ViewHolder extends RecyclerView.ViewHolder {
-
+        
         private View rootView;
         private ImageView ivPic;
         private ImageView ivDelete;
-
+        
         ViewHolder(View itemView) {
             super(itemView);
             rootView = itemView;
@@ -451,55 +471,55 @@ public class ZzImageBox extends RecyclerView {
             ivDelete = (ImageView) itemView.findViewById(R.id.iv_delete);
         }
     }
-
+    
     public static class ImageEntity {
         private String picUrl;
         private boolean isAdd;
         private boolean onLine;
         private String realPath;
         private int realType;
-
+        
         public boolean isAdd() {
             return isAdd;
         }
-
+        
         public void setAdd(boolean add) {
             isAdd = add;
         }
-
+        
         public void setPicUrl(String picUrl) {
             this.picUrl = picUrl;
         }
-
+        
         public String getPicUrl() {
             return picUrl;
         }
-
+        
         public boolean isOnLine() {
             return onLine;
         }
-
+        
         public void setOnLine(boolean onLine) {
             this.onLine = onLine;
         }
-
+        
         public String getRealPath() {
             return realPath;
         }
-
+        
         public void setRealPath(String realPath) {
             this.realPath = realPath;
         }
-
+        
         public int getRealType() {
             return realType;
         }
-
+        
         public void setRealType(int realType) {
             this.realType = realType;
         }
     }
-
+    
     /**
      * return all paths of images.
      *
@@ -516,7 +536,7 @@ public class ZzImageBox extends RecyclerView {
         }
         return allImages;
     }
-
+    
     /**
      * Get all custom paths
      *
@@ -533,7 +553,7 @@ public class ZzImageBox extends RecyclerView {
         }
         return allImages;
     }
-
+    
     /**
      * Get all custom types
      *
@@ -550,7 +570,7 @@ public class ZzImageBox extends RecyclerView {
         }
         return types;
     }
-
+    
     /**
      * Get all entity classes
      *
@@ -567,7 +587,7 @@ public class ZzImageBox extends RecyclerView {
         }
         return entities;
     }
-
+    
     /**
      * 获取图片数量
      *
@@ -584,7 +604,7 @@ public class ZzImageBox extends RecyclerView {
         }
         return count;
     }
-
+    
     /**
      * remove all images.
      */
@@ -598,7 +618,7 @@ public class ZzImageBox extends RecyclerView {
         }
         mAdapter.notifyDataSetChanged();
     }
-
+    
     /**
      * Return the image path of position.
      *
@@ -611,7 +631,7 @@ public class ZzImageBox extends RecyclerView {
         }
         return null;
     }
-
+    
     /**
      * Return the custom path of position.
      *
@@ -624,7 +644,7 @@ public class ZzImageBox extends RecyclerView {
         }
         return null;
     }
-
+    
     /**
      * Return the custom type of position.
      *
@@ -637,7 +657,7 @@ public class ZzImageBox extends RecyclerView {
         }
         return 0;
     }
-
+    
     /**
      * Return the custom type of position.
      *
@@ -650,7 +670,7 @@ public class ZzImageBox extends RecyclerView {
         }
         return null;
     }
-
+    
     /**
      * Set the max image size of one line.
      *
@@ -660,11 +680,11 @@ public class ZzImageBox extends RecyclerView {
         this.mImageSize = maxSize;
         if (mAdapter != null) {
             setLayoutManager(new GridLayoutManager(getContext(), maxSize));
-            mAdapter = new MyAdapter(getContext(), mDatas, mImageSize, mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mPadding, mLeftMargin, mRightMargin, mMaxLine, mClickListener, onlineImageLoader);
+            mAdapter = new MyAdapter(getContext(), getBoxWidth(), mDatas, mImageSize, mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mPadding, mLeftMargin, mRightMargin, mMaxLine, mClickListener, onlineImageLoader);
             setAdapter(mAdapter);
         }
     }
-
+    
     /**
      * Set the left margin of imageBox.
      *
@@ -676,7 +696,7 @@ public class ZzImageBox extends RecyclerView {
         mAdapter.setLeftMargin(this.mLeftMargin);
         mAdapter.notifyDataSetChanged();
     }
-
+    
     /**
      * Set the right margin of imageBox.
      *
@@ -688,7 +708,7 @@ public class ZzImageBox extends RecyclerView {
         mAdapter.setRightMargin(this.mRightMargin);
         mAdapter.notifyDataSetChanged();
     }
-
+    
     /**
      * Set the padding of each one image.
      *

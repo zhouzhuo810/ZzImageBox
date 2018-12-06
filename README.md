@@ -25,7 +25,7 @@
 
 
 ```
-    implementation 'me.zhouzhuo.zzimagebox:zz-image-box:1.0.9'
+    implementation 'me.zhouzhuo.zzimagebox:zz-image-box:1.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1' //版本自己决定
 ```
 
@@ -41,7 +41,6 @@
 
 
 #### 注意：
-- 为了保证图片是正方形，需要保证ZzImageBox水平方向是填满屏幕的，也就是说父容器不能有padding和margin。
 - ZzImageBox的marginLeft属性使用zib_left_margin代替；
 - ZzImageBox的marginRight属性使用zib_right_margin代替；
 - 如果不需要显示添加图片，可以设置zib_img_add为透明颜色；
@@ -136,11 +135,15 @@ java:
 
 ### 更新日志
 
+> v1.1.1
+
+- 修改计算图片宽度按控件本身宽度来；
+
 > v1.1.0
 
 - 修改ImageEntity的private为public；
 
-> v1.0.9
+> v1.1.1
 
 - 添加`ZzImageBox#getAllRealPath()`、
 `ZzImageBox#getAllRealType`、`ZzImageBox#getAllEntity`

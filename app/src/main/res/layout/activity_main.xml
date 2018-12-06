@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<LinearLayout android:id="@+id/activity_main"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
                 android:paddingLeft="10dp"
                 android:text="单行个数设置"
                 android:textColor="#666"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <RadioGroup
                 android:id="@+id/rg_numbers"
@@ -40,7 +40,7 @@
                     android:layout_weight="1"
                     android:text="最多3个"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <RadioButton
                     android:id="@+id/rb_number_four"
@@ -51,7 +51,7 @@
                     android:layout_weight="1"
                     android:text="最多4个"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <RadioButton
                     android:id="@+id/rb_number_five"
@@ -62,7 +62,7 @@
                     android:layout_weight="1"
                     android:text="最多5个"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
             </RadioGroup>
 
 
@@ -79,7 +79,7 @@
                     android:paddingLeft="10dp"
                     android:text="左间距(本例设为最大20px)"
                     android:textColor="#666"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/tv_left_margin"
@@ -89,7 +89,7 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:textColor="#666"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
             </LinearLayout>
 
@@ -98,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="20"
-                android:progress="0" />
+                android:progress="0"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -113,7 +113,7 @@
                     android:paddingLeft="10dp"
                     android:text="右间距(本例设为最大20px)"
                     android:textColor="#666"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/tv_right_margin"
@@ -123,7 +123,7 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:textColor="#666"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
             </LinearLayout>
 
 
@@ -132,7 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="20"
-                android:progress="0" />
+                android:progress="0"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -147,7 +147,7 @@
                     android:paddingLeft="10dp"
                     android:text="图片间距(本例设为最大20px)"
                     android:textColor="#666"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/tv_image_padding"
@@ -157,7 +157,7 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:textColor="#666"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
             </LinearLayout>
 
             <SeekBar
@@ -165,7 +165,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="20"
-                android:progress="0" />
+                android:progress="0"/>
 
 
             <LinearLayout
@@ -179,16 +179,16 @@
                     android:layout_width="3dp"
                     android:layout_height="16dp"
                     android:layout_marginLeft="20dp"
-                    android:background="@color/colorPrimary" />
+                    android:background="@color/colorPrimary"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
-                    android:text="编辑模式（本例设置的最多4行）"
                     android:layout_marginRight="20dp"
+                    android:text="编辑模式（本例设置的最多4行）"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
             </LinearLayout>
 
             <me.zhouzhuo.zzimagebox.ZzImageBox
@@ -203,7 +203,7 @@
                 app:zib_img_size_one_line="3"
                 app:zib_left_margin="0dp"
                 app:zib_max_line="4"
-                app:zib_right_margin="0dp" />
+                app:zib_right_margin="0dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -216,7 +216,7 @@
                     android:layout_width="3dp"
                     android:layout_height="16dp"
                     android:layout_marginLeft="20dp"
-                    android:background="@color/colorPrimary" />
+                    android:background="@color/colorPrimary"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -224,7 +224,7 @@
                     android:layout_marginLeft="4dp"
                     android:text="显示模式（本例设置的最多2行）"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
             </LinearLayout>
 
             <me.zhouzhuo.zzimagebox.ZzImageBox
@@ -238,8 +238,35 @@
                 app:zib_img_size_one_line="3"
                 app:zib_left_margin="0dp"
                 app:zib_max_line="2"
-                app:zib_right_margin="0dp" />
+                app:zib_right_margin="0dp"/>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="测试左右结构："
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp"/>
+
+                <me.zhouzhuo.zzimagebox.ZzImageBox
+                    android:id="@+id/zz_image_box_right"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:zib_img_add="@android:color/transparent"
+                    app:zib_img_default="@drawable/iv_default"
+                    app:zib_img_deletable="false"
+                    app:zib_img_padding="0dp"
+                    app:zib_img_size_one_line="3"
+                    app:zib_left_margin="0dp"
+                    app:zib_max_line="2"
+                    app:zib_right_margin="0dp"/>
+            </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>
