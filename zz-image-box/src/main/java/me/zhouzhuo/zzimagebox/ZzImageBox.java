@@ -279,10 +279,12 @@ public class ZzImageBox extends RecyclerView {
     @Override
     protected void onMeasure(int widthSpec, int heightSpec) {
         super.onMeasure(widthSpec, heightSpec);
-        if (mAdapter != null && mAdapter.boxWidth == 0) {
-            mAdapter.boxWidth = getBoxWidth();
-            mAdapter.setImageSize(mAdapter.imageSize);
-            mAdapter.notifyDataSetChanged();
+        if (mAdapter != null) {
+            if (mAdapter.boxWidth == 0) {
+                mAdapter.boxWidth = getBoxWidth();
+                mAdapter.setImageSize(mAdapter.imageSize);
+                mAdapter.notifyDataSetChanged();
+            }
         }
     }
     
@@ -336,6 +338,14 @@ public class ZzImageBox extends RecyclerView {
             this.listener = listener;
             this.imageLoader = imageLoader;
             this.picWidth = (boxWidth - leftMargin - rightMargin) / imageSize - padding * 2;
+        }
+        
+        public int getPicWidth() {
+            return picWidth;
+        }
+        
+        public int getPadding() {
+            return padding;
         }
         
         void setLeftMargin(int leftMargin) {
@@ -682,6 +692,9 @@ public class ZzImageBox extends RecyclerView {
             setLayoutManager(new GridLayoutManager(getContext(), maxSize));
             mAdapter = new MyAdapter(getContext(), getBoxWidth(), mDatas, mImageSize, mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mPadding, mLeftMargin, mRightMargin, mMaxLine, mClickListener, onlineImageLoader);
             setAdapter(mAdapter);
+            int picWidth = mAdapter.getPicWidth();
+            int padding = mAdapter.getPadding();
+            setMinimumHeight(picWidth + padding * 2);
         }
     }
     

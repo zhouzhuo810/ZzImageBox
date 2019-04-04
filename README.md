@@ -25,8 +25,8 @@
 
 
 ```
-    implementation 'me.zhouzhuo.zzimagebox:zz-image-box:1.1.1'
-    implementation 'com.android.support:recyclerview-v7:27.1.1' //版本自己决定
+    implementation 'me.zhouzhuo.zzimagebox:zz-image-box:1.1.2'
+    implementation 'com.android.support:recyclerview-v7:28.0.0' //版本自己决定
 ```
 
 
@@ -120,20 +120,24 @@ java:
 ```
 
 
-| 属性名| 属性类型 | 属性功能 |
-|:--------- |:-------------|:-----|
-| zib_max_line | integer | 最大行数 |
-| zib_img_size_one_line | integer | 每行数量 |
-| zib_img_padding| dimension | 图片之间的间距 |
-| zib_img_default | drawable/color | 默认图片资源id |
-| zib_img_delete |drawable/color | 删除图片资源id |
-| zib_img_add | drawable/color | 添加图片资源id |
-| zib_img_deletable |boolean | 是否显示删除图片 |
-| zib_left_margin| dimension | 控件距离屏幕左边距离 |
-| zib_right_margin| dimension | 控件距离屏幕右边距离 |
+>| 属性名| 属性类型 | 属性功能 |
+>|:--------- |:-------------|:-----|
+>| zib_max_line | integer | 最大行数 |
+>| zib_img_size_one_line | integer | 每行数量 |
+>| zib_img_padding| dimension | 图片之间的间距 |
+>| zib_img_default | drawable/color | 默认图片资源id |
+>| zib_img_delete |drawable/color | 删除图片资源id |
+>| zib_img_add | drawable/color | 添加图片资源id |
+>| zib_img_deletable |boolean | 是否显示删除图片 |
+>| zib_left_margin| dimension | 控件距离屏幕左边距离 |
+>| zib_right_margin| dimension | 控件距离屏幕右边距离 |
 
 
 ### 更新日志
+
+> v1.1.2
+
+- 修改RecyclerView版本，修复RecyclerView图片高度问题；
 
 > v1.1.1
 
