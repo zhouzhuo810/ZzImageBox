@@ -99,8 +99,9 @@ public class ZzImageBox extends RecyclerView {
         setPadding(mLeftMargin, 0, mRightMargin, 0);
         mAdapter = new MyAdapter(context, getBoxWidth(), mDatas, mImageSize, mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mPadding, mLeftMargin, mRightMargin, mMaxLine, mClickListener, onlineImageLoader);
         setAdapter(mAdapter);
-        
-        mAdapter.notifyDataSetChanged();
+        int picWidth = mAdapter.getPicWidth();
+        int padding = mAdapter.getPadding();
+        setMinimumHeight(picWidth + padding * 2);
     }
     
     public void setOnImageClickListener(OnImageClickListener mClickListener) {
@@ -416,7 +417,6 @@ public class ZzImageBox extends RecyclerView {
                 if (url != null && url.length() != 0) {
                     if (url.startsWith("http") || forceOnLine) {
                         if (imageLoader != null) {
-                            //FIXME by zhouzhuo 时间：2017/11/22 上午11:33 修改内容：添加网络图片加载器
                             imageLoader.onLoadImage(holder.ivPic, url);
                         } else {
                             holder.ivPic.setImageResource(defaultPic == -1 ? R.drawable.iv_default : defaultPic);
