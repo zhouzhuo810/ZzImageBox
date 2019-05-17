@@ -99,9 +99,6 @@ public class ZzImageBox extends RecyclerView {
         setPadding(mLeftMargin, 0, mRightMargin, 0);
         mAdapter = new MyAdapter(context, getBoxWidth(), mDatas, mImageSize, mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mPadding, mLeftMargin, mRightMargin, mMaxLine, mClickListener, onlineImageLoader);
         setAdapter(mAdapter);
-        int picWidth = mAdapter.getPicWidth();
-        int padding = mAdapter.getPadding();
-        setMinimumHeight(picWidth + padding * 2);
     }
     
     public void setOnImageClickListener(OnImageClickListener mClickListener) {
@@ -138,18 +135,30 @@ public class ZzImageBox extends RecyclerView {
         mAdapter.setmDatas(mDatas);
         mAdapter.notifyDataSetChanged();
     }
-    //
-    //    public static int getScreenWidth(Context context) {
-    //        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-    //        DisplayMetrics outMetrics = new DisplayMetrics();
-    //        windowManager.getDefaultDisplay().getMetrics(outMetrics);
-    //        return outMetrics.widthPixels;
-    //    }
-    
+
     public int getBoxWidth() {
         return getMeasuredWidth();
     }
     
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        int picWidth = mAdapter.getPicWidth();
+        int padding = mAdapter.getPadding();
+        if (getMinimumHeight() != picWidth + padding * 2) {
+            setMinimumHeight(picWidth + padding * 2);
+        }
+    }
+    
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+    }
+    
+    @Override
+    protected void measureChildren(int widthMeasureSpec, int heightMeasureSpec) {
+        super.measureChildren(widthMeasureSpec, heightMeasureSpec);
+    }
     
     /**
      * Add a image.
@@ -692,9 +701,6 @@ public class ZzImageBox extends RecyclerView {
             setLayoutManager(new GridLayoutManager(getContext(), maxSize));
             mAdapter = new MyAdapter(getContext(), getBoxWidth(), mDatas, mImageSize, mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mPadding, mLeftMargin, mRightMargin, mMaxLine, mClickListener, onlineImageLoader);
             setAdapter(mAdapter);
-            int picWidth = mAdapter.getPicWidth();
-            int padding = mAdapter.getPadding();
-            setMinimumHeight(picWidth + padding * 2);
         }
     }
     

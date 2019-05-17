@@ -25,7 +25,7 @@
 
 
 ```
-    implementation 'me.zhouzhuo.zzimagebox:zz-image-box:1.1.2'
+    implementation 'me.zhouzhuo.zzimagebox:zz-image-box:1.1.3'
     implementation 'com.android.support:recyclerview-v7:28.0.0' //版本自己决定
 ```
 
@@ -134,6 +134,11 @@ java:
 
 
 ### 更新日志
+
+
+> v1.1.3
+
+- 修改RecyclerView版本，修复RecyclerView图片高度问题；
 
 > v1.1.2
 
