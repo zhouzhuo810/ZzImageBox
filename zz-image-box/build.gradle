@@ -1,8 +1,9 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
 
-version = "1.1.5"
+//{github用户名}改为自己github的用户名
+group='com.github.zhouzhuo810'
+
 
 android {
     resourcePrefix "zz_" //随意填写
@@ -28,94 +29,37 @@ android {
     }
 }
 
-
 dependencies {
     implementation 'com.android.support:recyclerview-v7:28.0.0'
 }
 
 
+//...
 
+//添加下面这些才会有文档注释。
+
+// build a jar with source files
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier = 'sources'
 }
 
 task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
+    failOnError  false
+    source = android.sourceSets.main.java.sourceFiles
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += configurations.compile
 }
 
+// build a jar with javadoc
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
+
 artifacts {
-    archives javadocJar
     archives sourcesJar
-}
-
-group = "me.zhouzhuo.zzimagebox"            // Maven Group ID for the artifact，一般填你唯一的包名
-install {
-    repositories.mavenInstaller {
-        pom.project {
-            packaging 'aar'
-            groupId 'me.zhouzhuo.zzimagebox' //自己定义的组名
-            artifactId 'zz-image-box'
-
-            name 'zz-image-box'
-            description 'A powerful image container for adding and removing images.'
-            url 'https://github.com/zhouzhuo810/ZzImageBox'
-            inceptionYear '2016'
-
-            licenses {
-                license {
-                    name 'The Apache Software License, Version 2.0'
-                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    distribution 'repo'
-                }
-            }
-            scm {
-                connection 'https://github.com/zhouzhuo810/ZzImageBox.git'
-                url 'https://github.com/zhouzhuo810/ZzImageBox'
-
-            }
-            developers {
-                developer {
-                    name 'zhouzhuo'
-                    email 'admin@zhouzhuo810.me'
-                }
-            }
-        }
-    }
-}
-
-// Bintray
-
-//获取local.propertes的信息
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-    publish = true
-    configurations = ['archives']
-    pkg {
-        //填入 bintray 上对应的 package 信息
-        repo = 'maven'
-        name = 'zz-image-box'
-        vcsUrl = 'https://github.com/zhouzhuo810/ZzImageBox.git'
-        websiteUrl = 'https://github.com/zhouzhuo810/ZzImageBox'
-        licenses = ['Apache-2.0']
-        issueTrackerUrl = 'https://github.com/zhouzhuo810/ZzImageBox/issues'
-        publicDownloadNumbers = true
-        version {
-            name = '1.1.5'
-            desc = 'zz-image-box release'
-            vcsTag = '1.1.5'
-            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
-        }
-    }
+    archives javadocJar
 }
 
 tasks.withType(JavaCompile) {
