@@ -145,19 +145,10 @@ public class ZzImageBox extends RecyclerView {
         super.onSizeChanged(w, h, oldw, oldh);
         int picWidth = mAdapter.getPicWidth();
         int padding = mAdapter.getPadding();
-        if (getMinimumHeight() != picWidth + padding * 2) {
-            setMinimumHeight(picWidth + padding * 2);
+        int minHeight = picWidth + padding * 2;
+        if (getMinimumHeight() != minHeight) {
+            setMinimumHeight(minHeight);
         }
-    }
-    
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
-    }
-    
-    @Override
-    protected void measureChildren(int widthMeasureSpec, int heightMeasureSpec) {
-        super.measureChildren(widthMeasureSpec, heightMeasureSpec);
     }
     
     /**
@@ -404,10 +395,20 @@ public class ZzImageBox extends RecyclerView {
         @Override
         public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
             ImageView iv = (ImageView) holder.itemView.findViewById(R.id.iv_pic);
-            iv.setLayoutParams(new RelativeLayout.LayoutParams(picWidth, picWidth));
+            if (picWidth  > 0) {
+                ViewGroup.LayoutParams layoutParams = iv.getLayoutParams();
+                layoutParams.width = picWidth;
+                layoutParams.height = picWidth;
+                iv.setLayoutParams(layoutParams);
+            }
             ImageView ivDel = (ImageView) holder.itemView.findViewById(R.id.iv_delete);
-            ivDel.getLayoutParams().width = picWidth / 3;
-            ivDel.getLayoutParams().height = picWidth / 3;
+            int size = picWidth / 3;
+            if (size > 0) {
+                ViewGroup.LayoutParams layoutParams = ivDel.getLayoutParams();
+                layoutParams.width = size;
+                layoutParams.height = size;
+                ivDel.setLayoutParams(layoutParams);
+            }
             if (holder.getAdapterPosition() == getItemCount() - 1 && !lastOne) {
                 holder.ivDelete.setVisibility(GONE);
                 holder.ivPic.setImageResource(addPic == -1 ? R.drawable.iv_add : addPic);
