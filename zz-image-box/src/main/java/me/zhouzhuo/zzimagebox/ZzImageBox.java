@@ -8,12 +8,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,6 +43,8 @@ public class ZzImageBox extends RecyclerView {
     private MyAdapter mAdapter;
     
     private Context context;
+    
+    private int lastBoxSize = 0;
     
     private OnImageClickListener mClickListener;
     
@@ -135,7 +135,7 @@ public class ZzImageBox extends RecyclerView {
         mAdapter.setmDatas(mDatas);
         mAdapter.notifyDataSetChanged();
     }
-
+    
     public int getBoxWidth() {
         return getMeasuredWidth();
     }
@@ -143,12 +143,18 @@ public class ZzImageBox extends RecyclerView {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        int picWidth = mAdapter.getPicWidth();
-        int padding = mAdapter.getPadding();
-        int minHeight = picWidth + padding * 2;
-        if (getMinimumHeight() != minHeight) {
-            setMinimumHeight(minHeight);
-        }
+        mAdapter.onConfigurationChanged(w);
+        final int picWidth = mAdapter.getPicWidth();
+        final int padding = mAdapter.getPadding();
+        post(new Runnable() {
+            @Override
+            public void run() {
+                int minHeight = picWidth + padding * 2;
+                if (getMinimumHeight() != minHeight) {
+                    setMinimumHeight(minHeight);
+                }
+            }
+        });
     }
     
     /**
@@ -385,6 +391,15 @@ public class ZzImageBox extends RecyclerView {
                 this.picWidth = 0;
         }
         
+        public void onConfigurationChanged(int boxWidth) {
+            this.boxWidth = boxWidth;
+            if (imageSize != 0)
+                this.picWidth = (boxWidth - leftMargin - rightMargin) / imageSize - padding * 2;
+            else
+                this.picWidth = 0;
+            notifyDataSetChanged();
+        }
+        
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -395,7 +410,7 @@ public class ZzImageBox extends RecyclerView {
         @Override
         public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
             ImageView iv = (ImageView) holder.itemView.findViewById(R.id.iv_pic);
-            if (picWidth  > 0) {
+            if (picWidth > 0) {
                 ViewGroup.LayoutParams layoutParams = iv.getLayoutParams();
                 layoutParams.width = picWidth;
                 layoutParams.height = picWidth;

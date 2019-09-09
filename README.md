@@ -25,7 +25,7 @@
 
 
 ```
-     implementation 'com.github.zhouzhuo810:ZzImageBox:1.1.5'
+     implementation 'com.github.zhouzhuo810:ZzImageBox:1.1.6'
     implementation 'com.android.support:recyclerview-v7:28.0.0' //版本自己决定
 ```
 
@@ -135,6 +135,10 @@ java:
 
 ### 更新日志
 
+
+> v1.1.6
+
+- 修复横竖屏切换时，图片大小未变化问题；
 
 > v1.1.5
 

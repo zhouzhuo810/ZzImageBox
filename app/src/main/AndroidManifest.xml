@@ -17,7 +17,8 @@
             android:name="org.apache.http.legacy"
             android:required="false"/>
 
-        <activity android:name="me.zhouzhuo.zzimageboxdemo.MainActivity">
+        <activity android:name="me.zhouzhuo.zzimageboxdemo.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
