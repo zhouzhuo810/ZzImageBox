@@ -186,6 +186,15 @@ public class ZzImageBox extends RecyclerView {
      * @param imagePath the path of image.
      */
     public void addImageWithRealPathAndType(@NonNull String imagePath, String realPath, int realType) {
+        addImageWithRealPathAndType(imagePath, realPath, realType, null);
+    }
+    
+    /**
+     * Add a image with a custom path and type.
+     *
+     * @param imagePath the path of image.
+     */
+    public void addImageWithRealPathAndType(@NonNull String imagePath, String realPath, int realType, String tag) {
         if (mDatas != null) {
             if (mDatas.size() < mMaxLine * this.mImageSize) {
                 mAdapter.lastOne = false;
@@ -194,6 +203,7 @@ public class ZzImageBox extends RecyclerView {
                 entity.setAdd(false);
                 entity.setRealPath(realPath);
                 entity.setRealType(realType);
+                entity.setTag(tag);
                 entity.setOnLine(false);
                 this.mDatas.add(this.mDatas.size() - 1, entity);
             } else {
@@ -202,6 +212,8 @@ public class ZzImageBox extends RecyclerView {
                 this.mDatas.get(this.mDatas.size() - 1).setRealPath(realPath);
                 this.mDatas.get(this.mDatas.size() - 1).setRealType(realType);
                 this.mDatas.get(this.mDatas.size() - 1).setPicUrl(imagePath);
+                this.mDatas.get(this.mDatas.size() - 1).setTag(tag);
+                this.mDatas.get(this.mDatas.size() - 1).setOnLine(false);
             }
         }
         mAdapter.notifyDataSetChanged();
@@ -238,6 +250,10 @@ public class ZzImageBox extends RecyclerView {
      * @param realType  your custom type.
      */
     public void addImageOnlineWithRealPathAndType(@NonNull String imagePath, String realPath, int realType) {
+        addImageOnlineWithRealPathAndType(imagePath, realPath, realType, null);
+    }
+    
+    public void addImageOnlineWithRealPathAndType(@NonNull String imagePath, String realPath, int realType, String tag) {
         if (mDatas != null) {
             if (mDatas.size() < mMaxLine * this.mImageSize) {
                 mAdapter.lastOne = false;
@@ -247,6 +263,7 @@ public class ZzImageBox extends RecyclerView {
                 entity.setRealType(realType);
                 entity.setAdd(false);
                 entity.setOnLine(true);
+                entity.setTag(tag);
                 this.mDatas.add(this.mDatas.size() - 1, entity);
             } else {
                 mAdapter.lastOne = true;
@@ -254,6 +271,7 @@ public class ZzImageBox extends RecyclerView {
                 this.mDatas.get(this.mDatas.size() - 1).setRealPath(realPath);
                 this.mDatas.get(this.mDatas.size() - 1).setRealType(realType);
                 this.mDatas.get(this.mDatas.size() - 1).setPicUrl(imagePath);
+                this.mDatas.get(this.mDatas.size() - 1).setTag(tag);
             }
         }
         mAdapter.notifyDataSetChanged();
@@ -462,7 +480,9 @@ public class ZzImageBox extends RecyclerView {
                     @Override
                     public void onClick(View v) {
                         if (listener != null) {
-                            listener.onDeleteClick(holder.getAdapterPosition(), mDatas.get(holder.getAdapterPosition()).getPicUrl(), mDatas.get(holder.getAdapterPosition()).getRealPath(), mDatas.get(holder.getAdapterPosition()).getRealType());
+                            listener.onDeleteClick(holder.getAdapterPosition(), mDatas.get(holder.getAdapterPosition()).getPicUrl(),
+                                mDatas.get(holder.getAdapterPosition()).getRealPath(), mDatas.get(holder.getAdapterPosition()).getRealType(),
+                                mDatas.get(holder.getAdapterPosition()).getTag());
                         }
                     }
                 });
@@ -470,7 +490,9 @@ public class ZzImageBox extends RecyclerView {
                     @Override
                     public void onClick(View v) {
                         if (listener != null) {
-                            listener.onImageClick(holder.getAdapterPosition(), mDatas.get(holder.getAdapterPosition()).getPicUrl(), mDatas.get(holder.getAdapterPosition()).getRealPath(), mDatas.get(holder.getAdapterPosition()).getRealType(), holder.ivPic);
+                            listener.onImageClick(holder.getAdapterPosition(), mDatas.get(holder.getAdapterPosition()).getPicUrl(),
+                                mDatas.get(holder.getAdapterPosition()).getRealPath(), mDatas.get(holder.getAdapterPosition()).getRealType(), holder.ivPic,
+                                mDatas.get(holder.getAdapterPosition()).getTag());
                         }
                     }
                 });
@@ -486,9 +508,9 @@ public class ZzImageBox extends RecyclerView {
     
     public interface OnImageClickListener {
         
-        void onImageClick(int position, String url, String realPath, int realType, ImageView iv);
+        void onImageClick(int position, String url, String realPath, int realType, ImageView iv, String tag);
         
-        void onDeleteClick(int position, String url, String realPath, int realType);
+        void onDeleteClick(int position, String url, String realPath, int realType, String tag);
         
         void onAddClick();
     }
@@ -513,6 +535,15 @@ public class ZzImageBox extends RecyclerView {
         private boolean onLine;
         private String realPath;
         private int realType;
+        private String tag;
+        
+        public String getTag() {
+            return tag;
+        }
+        
+        public void setTag(String tag) {
+            this.tag = tag;
+        }
         
         public boolean isAdd() {
             return isAdd;
@@ -600,6 +631,23 @@ public class ZzImageBox extends RecyclerView {
             for (ImageEntity mData : mDatas) {
                 if (!mData.isAdd) {
                     types.add(mData.getRealType());
+                }
+            }
+        }
+        return types;
+    }
+    
+    /**
+     * Get all custom tags
+     *
+     * @return Custom tag
+     */
+    public List<String> getAllTags() {
+        final List<String> types = new ArrayList<>();
+        if (mDatas != null) {
+            for (ImageEntity mData : mDatas) {
+                if (!mData.isAdd) {
+                    types.add(mData.getTag());
                 }
             }
         }

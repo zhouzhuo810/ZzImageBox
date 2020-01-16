@@ -25,7 +25,7 @@
 
 
 ```
-     implementation 'com.github.zhouzhuo810:ZzImageBox:1.1.6'
+     implementation 'com.github.zhouzhuo810:ZzImageBox:1.1.7'
     implementation 'com.android.support:recyclerview-v7:28.0.0' //版本自己决定
 ```
 
@@ -81,12 +81,12 @@ java:
         });
         imageBoxAddMode.setOnImageClickListener(new ZzImageBox.OnImageClickListener() {
             @Override
-            public void onImageClick(int position, String filePath, String tag, int type, ImageView iv) {
+            public void onImageClick(int position, String url, String realPath, int realType, ImageView iv, String tag) {
                 Toast.makeText(MainActivity.this, "你点击了+" + position + "的图片:url=" + filePath + ", tag=" + tag, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onDeleteClick(int position, String filePath, String tag, int type) {
+            public void onDeleteClick(int position, String url, String realPath, int realType, String tag) {
                 Toast.makeText(MainActivity.this.getApplicationContext(), "tag=" + tag + ", type=" + type, Toast.LENGTH_SHORT).show();
                 //移除position位置的图片
                 imageBoxAddMode.removeImage(position);
@@ -135,6 +135,10 @@ java:
 
 ### 更新日志
 
+
+> v1.1.7
+
+- 新增Tag参数支持；
 
 > v1.1.6
 
