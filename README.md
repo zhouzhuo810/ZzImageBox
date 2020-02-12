@@ -25,7 +25,7 @@
 
 
 ```
-     implementation 'com.github.zhouzhuo810:ZzImageBox:1.1.7'
+    implementation 'com.github.zhouzhuo810:ZzImageBox:1.1.8'
     implementation 'com.android.support:recyclerview-v7:28.0.0' //版本自己决定
 ```
 
@@ -135,6 +135,9 @@ java:
 
 ### 更新日志
 
+> v1.1.8
+
+- holder.getAdapterPosition()改成position；
 
 > v1.1.7
 

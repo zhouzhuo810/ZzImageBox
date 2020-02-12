@@ -442,7 +442,7 @@ public class ZzImageBox extends RecyclerView {
                 layoutParams.height = size;
                 ivDel.setLayoutParams(layoutParams);
             }
-            if (holder.getAdapterPosition() == getItemCount() - 1 && !lastOne) {
+            if (position == getItemCount() - 1 && !lastOne) {
                 holder.ivDelete.setVisibility(GONE);
                 holder.ivPic.setImageResource(addPic == -1 ? R.drawable.iv_add : addPic);
                 holder.ivPic.setOnClickListener(new OnClickListener() {
@@ -454,8 +454,8 @@ public class ZzImageBox extends RecyclerView {
                     }
                 });
             } else {
-                String url = mDatas.get(holder.getAdapterPosition()).getPicUrl();
-                boolean forceOnLine = mDatas.get(holder.getAdapterPosition()).isOnLine();
+                String url = mDatas.get(position).getPicUrl();
+                boolean forceOnLine = mDatas.get(position).isOnLine();
                 
                 if (url != null && url.length() != 0) {
                     if (url.startsWith("http") || forceOnLine) {
@@ -480,9 +480,9 @@ public class ZzImageBox extends RecyclerView {
                     @Override
                     public void onClick(View v) {
                         if (listener != null) {
-                            listener.onDeleteClick(holder.getAdapterPosition(), mDatas.get(holder.getAdapterPosition()).getPicUrl(),
-                                mDatas.get(holder.getAdapterPosition()).getRealPath(), mDatas.get(holder.getAdapterPosition()).getRealType(),
-                                mDatas.get(holder.getAdapterPosition()).getTag());
+                            listener.onDeleteClick(position, mDatas.get(position).getPicUrl(),
+                                mDatas.get(position).getRealPath(), mDatas.get(position).getRealType(),
+                                mDatas.get(position).getTag());
                         }
                     }
                 });
@@ -490,9 +490,9 @@ public class ZzImageBox extends RecyclerView {
                     @Override
                     public void onClick(View v) {
                         if (listener != null) {
-                            listener.onImageClick(holder.getAdapterPosition(), mDatas.get(holder.getAdapterPosition()).getPicUrl(),
-                                mDatas.get(holder.getAdapterPosition()).getRealPath(), mDatas.get(holder.getAdapterPosition()).getRealType(), holder.ivPic,
-                                mDatas.get(holder.getAdapterPosition()).getTag());
+                            listener.onImageClick(position, mDatas.get(position).getPicUrl(),
+                                mDatas.get(position).getRealPath(), mDatas.get(position).getRealType(), holder.ivPic,
+                                mDatas.get(position).getTag());
                         }
                     }
                 });
