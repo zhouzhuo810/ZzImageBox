@@ -25,7 +25,7 @@
 
 
 ```
-    implementation 'com.github.zhouzhuo810:ZzImageBox:1.1.8'
+    implementation 'com.github.zhouzhuo810:ZzImageBox:1.1.9'
     implementation 'com.android.support:recyclerview-v7:28.0.0' //版本自己决定
 ```
 
@@ -134,6 +134,10 @@ java:
 
 
 ### 更新日志
+
+> v1.1.9
+
+- 加强position判断;
 
 > v1.1.8
 

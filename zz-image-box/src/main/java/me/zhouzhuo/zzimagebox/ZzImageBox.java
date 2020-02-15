@@ -283,6 +283,9 @@ public class ZzImageBox extends RecyclerView {
      * @param position position.
      */
     public void removeImage(int position) {
+        if (position < 0) {
+            return;
+        }
         if (mDatas != null) {
             if (position + 1 == mMaxLine * this.mImageSize && mAdapter.lastOne) {
                 mAdapter.lastOne = false;
@@ -709,7 +712,7 @@ public class ZzImageBox extends RecyclerView {
      * @return image path.
      */
     public String getImagePathAt(int position) {
-        if (mDatas != null && mDatas.size() > position) {
+        if (mDatas != null && mDatas.size() > position && position >= 0) {
             return mDatas.get(position).getPicUrl();
         }
         return null;
@@ -722,7 +725,7 @@ public class ZzImageBox extends RecyclerView {
      * @return custom path.
      */
     public String getRealPathAt(int position) {
-        if (mDatas != null && mDatas.size() > position) {
+        if (mDatas != null && mDatas.size() > position && position >= 0) {
             return mDatas.get(position).getRealPath();
         }
         return null;
@@ -735,7 +738,7 @@ public class ZzImageBox extends RecyclerView {
      * @return custom type, default = 0.
      */
     public int getRealTypeAt(int position) {
-        if (mDatas != null && mDatas.size() > position) {
+        if (mDatas != null && mDatas.size() > position && position >= 0) {
             return mDatas.get(position).getRealType();
         }
         return 0;
@@ -748,7 +751,7 @@ public class ZzImageBox extends RecyclerView {
      * @return custom type, default = 0.
      */
     public ImageEntity getEntityAt(int position) {
-        if (mDatas != null && mDatas.size() > position) {
+        if (mDatas != null && mDatas.size() > position && position >= 0) {
             return mDatas.get(position);
         }
         return null;
