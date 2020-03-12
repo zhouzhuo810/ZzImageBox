@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -46,7 +47,7 @@ public class ZzImageBox extends RecyclerView {
     
     private int lastBoxSize = 0;
     
-    private OnImageClickListener mClickListener;
+    private AbsOnImageClickListener mClickListener;
     
     public ZzImageBox(Context context) {
         super(context);
@@ -101,7 +102,7 @@ public class ZzImageBox extends RecyclerView {
         setAdapter(mAdapter);
     }
     
-    public void setOnImageClickListener(OnImageClickListener mClickListener) {
+    public void setOnImageClickListener(AbsOnImageClickListener mClickListener) {
         this.mClickListener = mClickListener;
         mAdapter.listener = mClickListener;
     }
@@ -177,6 +178,30 @@ public class ZzImageBox extends RecyclerView {
                 this.mDatas.get(this.mDatas.size() - 1).setPicUrl(imagePath);
             }
         }
+        mAdapter.notifyDataSetChanged();
+    }
+    
+    /**
+     * 图片向左移动
+     * @param position 位置
+     */
+    public void swapPositionWithLeft(int position) {
+        if (position < 2 || position >= mDatas.size() - 1) {
+            return;
+        }
+        Collections.swap(mDatas, position, position - 1);
+        mAdapter.notifyDataSetChanged();
+    }
+    
+    /**
+     * 图片向右移动
+     * @param position 位置
+     */
+    public void swapPositionWithRight(int position) {
+        if (position < 0 || position >= mDatas.size() - 2) {
+            return;
+        }
+        Collections.swap(mDatas, position, position + 1);
         mAdapter.notifyDataSetChanged();
     }
     
@@ -456,6 +481,16 @@ public class ZzImageBox extends RecyclerView {
                         }
                     }
                 });
+                holder.ivPic.setOnLongClickListener(new OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        if (listener != null) {
+                            listener.onAddLongPress();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
             } else {
                 String url = mDatas.get(position).getPicUrl();
                 boolean forceOnLine = mDatas.get(position).isOnLine();
@@ -499,6 +534,18 @@ public class ZzImageBox extends RecyclerView {
                         }
                     }
                 });
+                holder.ivPic.setOnLongClickListener(new OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        if (listener != null) {
+                            listener.onImageLongPress(position, mDatas.get(position).getPicUrl(),
+                                mDatas.get(position).getRealPath(), mDatas.get(position).getRealType(), holder.ivPic,
+                                mDatas.get(position).getTag());
+                            return true;
+                        }
+                        return false;
+                    }
+                });
             }
             holder.rootView.setPadding(padding, padding, padding, padding);
         }
@@ -513,9 +560,32 @@ public class ZzImageBox extends RecyclerView {
         
         void onImageClick(int position, String url, String realPath, int realType, ImageView iv, String tag);
         
+        void onImageLongPress(int position, String url, String realPath, int realType, ImageView iv, String tag);
+        
         void onDeleteClick(int position, String url, String realPath, int realType, String tag);
         
         void onAddClick();
+        
+        void onAddLongPress();
+    }
+    
+    public static abstract class AbsOnImageClickListener implements OnImageClickListener {
+        
+        @Override
+        public void onAddClick() {
+        }
+        
+        @Override
+        public void onAddLongPress() {
+        }
+        
+        @Override
+        public void onDeleteClick(int position, String url, String realPath, int realType, String tag) {
+        }
+        
+        @Override
+        public void onImageLongPress(int position, String url, String realPath, int realType, ImageView iv, String tag) {
+        }
     }
     
     private static class ViewHolder extends RecyclerView.ViewHolder {

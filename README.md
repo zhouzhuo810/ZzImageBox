@@ -25,7 +25,7 @@
 
 
 ```
-    implementation 'com.github.zhouzhuo810:ZzImageBox:1.1.9'
+    implementation 'com.github.zhouzhuo810:ZzImageBox:1.2.0'
     implementation 'com.android.support:recyclerview-v7:28.0.0' //版本自己决定
 ```
 
@@ -98,6 +98,19 @@ java:
 //                imageBoxAddMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
                 imageBoxAddMode.addImageOnlineWithRealPathAndType("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg", "tag" + imageBoxAddMode.getCount(), imageBoxAddMode.getCount());
             }
+
+            @Override
+            public void onAddLongPress() {
+                super.onAddLongPress();
+                Toast.makeText(MainActivity.this, "你长按了加号", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onImageLongPress(int position, String url, String realPath, int realType, ImageView iv, String tag) {
+                super.onImageLongPress(position, url, realPath, realType, iv, tag);
+                Toast.makeText(MainActivity.this, "你长按了+" + position + "的图片:url=" + url + ", tag=" + tag, Toast.LENGTH_SHORT).show();
+
+            }
         });
 
 ```
@@ -134,6 +147,11 @@ java:
 
 
 ### 更新日志
+
+> v1.2.0
+
+- 支持长按图片和长按加号监听；
+- 支持图片左右移动方法；
 
 > v1.1.9
 

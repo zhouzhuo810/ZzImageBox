@@ -1,7 +1,9 @@
 package me.zhouzhuo.zzimageboxdemo;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
@@ -36,25 +38,56 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //点击监听
-        imageBoxAddMode.setOnImageClickListener(new ZzImageBox.OnImageClickListener() {
-    
+        imageBoxAddMode.setOnImageClickListener(new ZzImageBox.AbsOnImageClickListener() {
+            
             @Override
             public void onImageClick(int position, String url, String realPath, int realType, ImageView iv, String tag) {
                 Toast.makeText(MainActivity.this, "你点击了+" + position + "的图片:url=" + url + ", tag=" + tag, Toast.LENGTH_SHORT).show();
             }
-    
+            
             @Override
             public void onDeleteClick(int position, String url, String realPath, int realType, String tag) {
                 Toast.makeText(MainActivity.this.getApplicationContext(), "tag=" + tag + ", type=" + realType, Toast.LENGTH_SHORT).show();
                 //移除position位置的图片
                 imageBoxAddMode.removeImage(position);
             }
-    
+            
             @Override
             public void onAddClick() {
                 //添加网络图片
                 //                imageBoxAddMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
-                imageBoxAddMode.addImageOnlineWithRealPathAndType("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg", "tag" + imageBoxAddMode.getCount(), imageBoxAddMode.getCount());
+                if (imageBoxAddMode.getCount()  % 2 == 0) {
+                    imageBoxAddMode.addImageOnlineWithRealPathAndType("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg", "tag" + imageBoxAddMode.getCount(), imageBoxAddMode.getCount());
+                } else {
+                    imageBoxAddMode.addImageOnlineWithRealPathAndType("https://p.ssl.qhimg.com/dm/420_627_/t01b998f20bf6fcbfd4.jpg", "tag" + imageBoxAddMode.getCount(), imageBoxAddMode.getCount());
+                }
+            }
+            
+            @Override
+            public void onAddLongPress() {
+                super.onAddLongPress();
+                Toast.makeText(MainActivity.this, "你长按了加号", Toast.LENGTH_SHORT).show();
+            }
+            
+            @Override
+            public void onImageLongPress(final int position, String url, String realPath, int realType, ImageView iv, String tag) {
+                super.onImageLongPress(position, url, realPath, realType, iv, tag);
+                Toast.makeText(MainActivity.this, "你长按了+" + position + "的图片:url=" + url + ", tag=" + tag, Toast.LENGTH_SHORT).show();
+                new AlertDialog.Builder(MainActivity.this)
+                    .setItems(new String[]{"左移", "右移"}, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case 0:
+                                    imageBoxAddMode.swapPositionWithLeft(position);
+                                    break;
+                                case 1:
+                                    imageBoxAddMode.swapPositionWithRight(position);
+                                    break;
+                            }
+                        }
+                    })
+                    .show();
             }
         });
         
@@ -82,18 +115,18 @@ public class MainActivity extends AppCompatActivity {
         imageBoxShowMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
         
         //点击监听
-        imageBoxShowMode.setOnImageClickListener(new ZzImageBox.OnImageClickListener() {
-    
+        imageBoxShowMode.setOnImageClickListener(new ZzImageBox.AbsOnImageClickListener() {
+            
             @Override
             public void onImageClick(int position, String url, String realPath, int realType, ImageView iv, String tag) {
                 Toast.makeText(MainActivity.this, "你点击了+" + position + "的图片:url=" + url + ", tag=" + tag, Toast.LENGTH_SHORT).show();
             }
-    
+            
             @Override
             public void onDeleteClick(int position, String url, String realPath, int realType, String tag) {
-        
+            
             }
-    
+            
             @Override
             public void onAddClick() {
             }
