@@ -10,5 +10,6 @@
         <attr name="zib_img_deletable" format="boolean" />
         <attr name="zib_left_margin" format="dimension|reference" />
         <attr name="zib_right_margin" format="dimension|reference" />
+        <attr name="zib_icon_color" format="color|reference" />
     </declare-styleable>
 </resources>

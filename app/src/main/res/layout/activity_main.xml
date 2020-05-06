@@ -199,6 +199,7 @@
                 app:zib_img_default="@drawable/iv_default"
                 app:zib_img_deletable="true"
                 app:zib_img_delete="@drawable/iv_delete"
+                app:zib_icon_color="@color/colorAccent"
                 app:zib_img_padding="0dp"
                 app:zib_img_size_one_line="3"
                 app:zib_left_margin="0dp"

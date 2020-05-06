@@ -25,7 +25,7 @@
 
 
 ```
-    implementation 'com.github.zhouzhuo810:ZzImageBox:1.2.0'
+    implementation 'com.github.zhouzhuo810:ZzImageBox:1.2.1'
     implementation 'com.android.support:recyclerview-v7:28.0.0' //版本自己决定
 ```
 
@@ -129,6 +129,7 @@ java:
         <attr name="zib_img_deletable" format="boolean" />
         <attr name="zib_left_margin" format="dimension|reference" />
         <attr name="zib_right_margin" format="dimension|reference" />
+        <attr name="zib_icon_color" format="color|reference" />
     </declare-styleable>
 ```
 
@@ -141,12 +142,16 @@ java:
 >| zib_img_default | drawable/color | 默认图片资源id |
 >| zib_img_delete |drawable/color | 删除图片资源id |
 >| zib_img_add | drawable/color | 添加图片资源id |
+>| zib_icon_color | color | 添加图片的颜色 |
 >| zib_img_deletable |boolean | 是否显示删除图片 |
 >| zib_left_margin| dimension | 控件距离屏幕左边距离 |
 >| zib_right_margin| dimension | 控件距离屏幕右边距离 |
 
 
 ### 更新日志
+
+> v1.2.1
+- 支持设置新增按钮图片的颜色；
 
 > v1.2.0
 

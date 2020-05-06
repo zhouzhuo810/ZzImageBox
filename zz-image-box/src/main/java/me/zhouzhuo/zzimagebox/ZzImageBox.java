@@ -2,12 +2,15 @@ package me.zhouzhuo.zzimagebox;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.ColorMatrixColorFilter;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,7 @@ import java.util.List;
 public class ZzImageBox extends RecyclerView {
     
     private int mMaxLine;
+    private int mIconColor;
     private int mImageSize;
     private int mPadding;
     private int mLeftMargin;
@@ -37,6 +41,7 @@ public class ZzImageBox extends RecyclerView {
     private static final int DEFAULT_MAX_LINE = 1;
     private static final int DEFAULT_IMAGE_SIZE = 4;
     private static final int DEFAULT_IMAGE_PADDING = 5;
+    private static final int DEFAULT_DEFAULT_ICON_COLOR = 0x0;
     
     private OnlineImageLoader onlineImageLoader;
     
@@ -82,6 +87,7 @@ public class ZzImageBox extends RecyclerView {
         mRightMargin = a.getDimensionPixelSize(R.styleable.ZzImageBox_zib_right_margin, 0);
         mMaxLine = a.getInteger(R.styleable.ZzImageBox_zib_max_line, DEFAULT_MAX_LINE);
         mImageSize = a.getInteger(R.styleable.ZzImageBox_zib_img_size_one_line, DEFAULT_IMAGE_SIZE);
+        mIconColor = a.getColor(R.styleable.ZzImageBox_zib_icon_color, DEFAULT_DEFAULT_ICON_COLOR);
         mPadding = a.getDimensionPixelSize(R.styleable.ZzImageBox_zib_img_padding, DEFAULT_IMAGE_PADDING);
         mDefaultPicId = a.getResourceId(R.styleable.ZzImageBox_zib_img_default, -1);
         mDeletePicId = a.getResourceId(R.styleable.ZzImageBox_zib_img_delete, -1);
@@ -98,7 +104,8 @@ public class ZzImageBox extends RecyclerView {
         setHasFixedSize(true);
         setLayoutManager(new GridLayoutManager(context, mImageSize));
         setPadding(mLeftMargin, 0, mRightMargin, 0);
-        mAdapter = new MyAdapter(context, getBoxWidth(), mDatas, mImageSize, mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mPadding, mLeftMargin, mRightMargin, mMaxLine, mClickListener, onlineImageLoader);
+        mAdapter = new MyAdapter(context, getBoxWidth(), mDatas, mImageSize, mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mPadding, mLeftMargin, mRightMargin,
+            mMaxLine, mIconColor, mClickListener, onlineImageLoader);
         setAdapter(mAdapter);
     }
     
@@ -128,6 +135,12 @@ public class ZzImageBox extends RecyclerView {
     public void setDeletable(boolean deletable) {
         this.mDeletable = deletable;
         mAdapter.deletable = deletable;
+        mAdapter.notifyDataSetChanged();
+    }
+    
+    public void setIconColor(int iconColor) {
+        this.mIconColor = iconColor;
+        mAdapter.setIconColor(iconColor);
         mAdapter.notifyDataSetChanged();
     }
     
@@ -183,6 +196,7 @@ public class ZzImageBox extends RecyclerView {
     
     /**
      * 图片向左移动
+     *
      * @param position 位置
      */
     public void swapPositionWithLeft(int position) {
@@ -195,6 +209,7 @@ public class ZzImageBox extends RecyclerView {
     
     /**
      * 图片向右移动
+     *
      * @param position 位置
      */
     public void swapPositionWithRight(int position) {
@@ -356,11 +371,12 @@ public class ZzImageBox extends RecyclerView {
         private int imageSize;
         private int leftMargin;
         private int rightMargin;
+        private int iconColor;
         private boolean lastOne;
         private OnImageClickListener listener;
         private OnlineImageLoader imageLoader;
         
-        MyAdapter(Context context, int boxWidth, List<ImageEntity> mDatas, int imageSize, int defaultPic, int deletePic, int addPic, boolean deletable, int padding, int leftMargin, int rightMargin, int maxLine, OnImageClickListener listener, OnlineImageLoader imageLoader) {
+        MyAdapter(Context context, int boxWidth, List<ImageEntity> mDatas, int imageSize, int defaultPic, int deletePic, int addPic, boolean deletable, int padding, int leftMargin, int rightMargin, int maxLine, int iconColor, OnImageClickListener listener, OnlineImageLoader imageLoader) {
             mInflater = LayoutInflater.from(context);
             this.mContext = context;
             this.mDatas = mDatas;
@@ -390,7 +406,16 @@ public class ZzImageBox extends RecyclerView {
             this.lastOne = false;
             this.listener = listener;
             this.imageLoader = imageLoader;
+            this.iconColor = iconColor;
             this.picWidth = (boxWidth - leftMargin - rightMargin) / imageSize - padding * 2;
+        }
+        
+        public int getIconColor() {
+            return iconColor;
+        }
+        
+        public void setIconColor(int iconColor) {
+            this.iconColor = iconColor;
         }
         
         public int getPicWidth() {
@@ -455,14 +480,14 @@ public class ZzImageBox extends RecyclerView {
         
         @Override
         public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-            ImageView iv = (ImageView) holder.itemView.findViewById(R.id.iv_pic);
+            ImageView iv = holder.itemView.findViewById(R.id.iv_pic);
             if (picWidth > 0) {
                 ViewGroup.LayoutParams layoutParams = iv.getLayoutParams();
                 layoutParams.width = picWidth;
                 layoutParams.height = picWidth;
                 iv.setLayoutParams(layoutParams);
             }
-            ImageView ivDel = (ImageView) holder.itemView.findViewById(R.id.iv_delete);
+            ImageView ivDel = holder.itemView.findViewById(R.id.iv_delete);
             int size = picWidth / 3;
             if (size > 0) {
                 ViewGroup.LayoutParams layoutParams = ivDel.getLayoutParams();
@@ -473,6 +498,7 @@ public class ZzImageBox extends RecyclerView {
             if (position == getItemCount() - 1 && !lastOne) {
                 holder.ivDelete.setVisibility(GONE);
                 holder.ivPic.setImageResource(addPic == -1 ? R.drawable.iv_add : addPic);
+                setImageViewColor(holder.ivPic, iconColor);
                 holder.ivPic.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -508,6 +534,7 @@ public class ZzImageBox extends RecyclerView {
                 } else {
                     holder.ivPic.setImageResource(defaultPic == -1 ? R.drawable.iv_default : defaultPic);
                 }
+                setImageViewColor(holder.ivPic, 0);
                 if (deletable) {
                     holder.ivDelete.setVisibility(VISIBLE);
                 } else {
@@ -836,7 +863,7 @@ public class ZzImageBox extends RecyclerView {
         this.mImageSize = maxSize;
         if (mAdapter != null) {
             setLayoutManager(new GridLayoutManager(getContext(), maxSize));
-            mAdapter = new MyAdapter(getContext(), getBoxWidth(), mDatas, mImageSize, mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mPadding, mLeftMargin, mRightMargin, mMaxLine, mClickListener, onlineImageLoader);
+            mAdapter = new MyAdapter(getContext(), getBoxWidth(), mDatas, mImageSize, mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mPadding, mLeftMargin, mRightMargin, mMaxLine, mIconColor, mClickListener, onlineImageLoader);
             setAdapter(mAdapter);
         }
     }
@@ -875,4 +902,24 @@ public class ZzImageBox extends RecyclerView {
         mAdapter.setImagePadding(this.mPadding);
         mAdapter.notifyDataSetChanged();
     }
+    
+    public static void setImageViewColor(ImageView icon, int color) {
+        if (color == 0) {
+            try {
+                icon.setColorFilter(null);
+            } catch (Exception ignored) {
+            }
+            return;
+        }
+        int r = Color.red(color);
+        int g = Color.green(color);
+        int b = Color.blue(color);
+        int a = Color.alpha(color);
+        float[] colorMatrix = new float[]{0, 0, 0, 0, r, 0, 0, 0, 0, g, 0, 0, 0, 0, b, 0, 0, 0, (float) a / 255, 0};
+        try {
+            icon.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+        } catch (Exception e) {
+        }
+    }
+    
 }
