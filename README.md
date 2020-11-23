@@ -25,8 +25,8 @@
 
 
 ```
-    implementation 'com.github.zhouzhuo810:ZzImageBox:1.2.1'
-    implementation 'com.android.support:recyclerview-v7:28.0.0' //版本自己决定
+    implementation 'com.github.zhouzhuo810:ZzImageBox:1.2.2'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0' //版本自己决定
 ```
 
 
@@ -149,6 +149,10 @@ java:
 
 
 ### 更新日志
+
+> v1.2.2
+- onDeleteClick回调方法中增加ImageView参数；
+- 升级AndroidX；
 
 > v1.2.1
 - 支持设置新增按钮图片的颜色；

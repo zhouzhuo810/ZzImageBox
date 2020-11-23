@@ -5,12 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.ColorMatrixColorFilter;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +15,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * ZzImageBox-A powerful Image Container.
@@ -456,18 +456,20 @@ public class ZzImageBox extends RecyclerView {
         
         public void setImageSize(int imageSize) {
             this.imageSize = imageSize;
-            if (imageSize != 0)
+            if (imageSize != 0) {
                 this.picWidth = (boxWidth - leftMargin - rightMargin) / imageSize - padding * 2;
-            else
+            } else {
                 this.picWidth = 0;
+            }
         }
         
         public void onConfigurationChanged(int boxWidth) {
             this.boxWidth = boxWidth;
-            if (imageSize != 0)
+            if (imageSize != 0) {
                 this.picWidth = (boxWidth - leftMargin - rightMargin) / imageSize - padding * 2;
-            else
+            } else {
                 this.picWidth = 0;
+            }
             notifyDataSetChanged();
         }
         
@@ -495,7 +497,7 @@ public class ZzImageBox extends RecyclerView {
                 layoutParams.height = size;
                 ivDel.setLayoutParams(layoutParams);
             }
-            if (position == getItemCount() - 1 && !lastOne) {
+            if (holder.getAdapterPosition() == getItemCount() - 1 && !lastOne) {
                 holder.ivDelete.setVisibility(GONE);
                 holder.ivPic.setImageResource(addPic == -1 ? R.drawable.iv_add : addPic);
                 setImageViewColor(holder.ivPic, iconColor);
@@ -518,8 +520,8 @@ public class ZzImageBox extends RecyclerView {
                     }
                 });
             } else {
-                String url = mDatas.get(position).getPicUrl();
-                boolean forceOnLine = mDatas.get(position).isOnLine();
+                String url = mDatas.get(holder.getAdapterPosition()).getPicUrl();
+                boolean forceOnLine = mDatas.get(holder.getAdapterPosition()).isOnLine();
                 
                 if (url != null && url.length() != 0) {
                     if (url.startsWith("http") || forceOnLine) {
@@ -545,9 +547,13 @@ public class ZzImageBox extends RecyclerView {
                     @Override
                     public void onClick(View v) {
                         if (listener != null) {
-                            listener.onDeleteClick(position, mDatas.get(position).getPicUrl(),
-                                mDatas.get(position).getRealPath(), mDatas.get(position).getRealType(),
-                                mDatas.get(position).getTag());
+                            final int pos = holder.getAdapterPosition();
+                            listener.onDeleteClick(pos, mDatas.get(pos).getPicUrl(),
+                                mDatas.get(pos).getRealPath(), mDatas.get(pos).getRealType(),
+                                mDatas.get(pos).getTag());
+                            listener.onDeleteClick(holder.ivPic, pos, mDatas.get(pos).getPicUrl(),
+                                mDatas.get(pos).getRealPath(), mDatas.get(pos).getRealType(),
+                                mDatas.get(pos).getTag());
                         }
                     }
                 });
@@ -555,9 +561,10 @@ public class ZzImageBox extends RecyclerView {
                     @Override
                     public void onClick(View v) {
                         if (listener != null) {
-                            listener.onImageClick(position, mDatas.get(position).getPicUrl(),
-                                mDatas.get(position).getRealPath(), mDatas.get(position).getRealType(), holder.ivPic,
-                                mDatas.get(position).getTag());
+                            final int pos = holder.getAdapterPosition();
+                            listener.onImageClick(pos, mDatas.get(pos).getPicUrl(),
+                                mDatas.get(pos).getRealPath(), mDatas.get(pos).getRealType(), holder.ivPic,
+                                mDatas.get(pos).getTag());
                         }
                     }
                 });
@@ -565,9 +572,10 @@ public class ZzImageBox extends RecyclerView {
                     @Override
                     public boolean onLongClick(View v) {
                         if (listener != null) {
-                            listener.onImageLongPress(position, mDatas.get(position).getPicUrl(),
-                                mDatas.get(position).getRealPath(), mDatas.get(position).getRealType(), holder.ivPic,
-                                mDatas.get(position).getTag());
+                            final int pos = holder.getAdapterPosition();
+                            listener.onImageLongPress(pos, mDatas.get(pos).getPicUrl(),
+                                mDatas.get(pos).getRealPath(), mDatas.get(pos).getRealType(), holder.ivPic,
+                                mDatas.get(pos).getTag());
                             return true;
                         }
                         return false;
@@ -591,6 +599,8 @@ public class ZzImageBox extends RecyclerView {
         
         void onDeleteClick(int position, String url, String realPath, int realType, String tag);
         
+        void onDeleteClick(ImageView ivPic, int position, String url, String realPath, int realType, String tag);
+        
         void onAddClick();
         
         void onAddLongPress();
@@ -611,6 +621,10 @@ public class ZzImageBox extends RecyclerView {
         }
         
         @Override
+        public void onDeleteClick(ImageView ivPic, int position, String url, String realPath, int realType, String tag) {
+        }
+        
+        @Override
         public void onImageLongPress(int position, String url, String realPath, int realType, ImageView iv, String tag) {
         }
     }
@@ -624,8 +638,8 @@ public class ZzImageBox extends RecyclerView {
         ViewHolder(View itemView) {
             super(itemView);
             rootView = itemView;
-            ivPic = (ImageView) itemView.findViewById(R.id.iv_pic);
-            ivDelete = (ImageView) itemView.findViewById(R.id.iv_delete);
+            ivPic = itemView.findViewById(R.id.iv_pic);
+            ivDelete = itemView.findViewById(R.id.iv_delete);
         }
     }
     

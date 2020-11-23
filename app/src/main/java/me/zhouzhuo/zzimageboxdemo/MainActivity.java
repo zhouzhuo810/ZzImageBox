@@ -2,9 +2,6 @@ package me.zhouzhuo.zzimageboxdemo;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -14,6 +11,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import androidx.annotation.IdRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import me.zhouzhuo.zzimagebox.ZzImageBox;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,11 +23,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        RadioGroup rgNumbers = (RadioGroup) findViewById(R.id.rg_numbers);
+        RadioGroup rgNumbers = findViewById(R.id.rg_numbers);
         
         rgNumbers.check(R.id.rb_number_three);
         
-        final ZzImageBox imageBoxAddMode = (ZzImageBox) findViewById(R.id.zz_image_box_add_mode);
+        final ZzImageBox imageBoxAddMode = findViewById(R.id.zz_image_box_add_mode);
         //如果加载网络图片，需要设置此代理
         imageBoxAddMode.setOnlineImageLoader(new ZzImageBox.OnlineImageLoader() {
             @Override
@@ -46,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
             }
             
             @Override
-            public void onDeleteClick(int position, String url, String realPath, int realType, String tag) {
+            public void onDeleteClick(ImageView ivPic, int position, String url, String realPath, int realType, String tag) {
+                super.onDeleteClick(ivPic, position, url, realPath, realType, tag);
+                Glide.with(MainActivity.this).clear(ivPic);
                 Toast.makeText(MainActivity.this.getApplicationContext(), "tag=" + tag + ", type=" + realType, Toast.LENGTH_SHORT).show();
                 //移除position位置的图片
                 imageBoxAddMode.removeImage(position);
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAddClick() {
                 //添加网络图片
                 //                imageBoxAddMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
-                if (imageBoxAddMode.getCount()  % 2 == 0) {
+                if (imageBoxAddMode.getCount() % 2 == 0) {
                     imageBoxAddMode.addImageOnlineWithRealPathAndType("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg", "tag" + imageBoxAddMode.getCount(), imageBoxAddMode.getCount());
                 } else {
                     imageBoxAddMode.addImageOnlineWithRealPathAndType("https://p.ssl.qhimg.com/dm/420_627_/t01b998f20bf6fcbfd4.jpg", "tag" + imageBoxAddMode.getCount(), imageBoxAddMode.getCount());
@@ -97,13 +99,14 @@ public class MainActivity extends AppCompatActivity {
          *            app:zib_img_add="@android:color/transparent"
          *            app:zib_img_deletable="false"
          */
-        final ZzImageBox imageBoxShowMode = (ZzImageBox) findViewById(R.id.zz_image_box_show_mode);
+        final ZzImageBox imageBoxShowMode = findViewById(R.id.zz_image_box_show_mode);
         //如果加载网络图片，需要设置此代理
         imageBoxShowMode.setOnlineImageLoader(new ZzImageBox.OnlineImageLoader() {
             @Override
             public void onLoadImage(ImageView iv, String url) {
                 Log.e("TTT", "url=" + url);
                 //本例使用Glide加载
+                Glide.with(MainActivity.this).clear(iv);
                 Glide.with(MainActivity.this).load(url).into(iv);
             }
         });
@@ -171,11 +174,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         
-        final TextView tvLeftMargin = (TextView) findViewById(R.id.tv_left_margin);
-        final TextView tvRightMargin = (TextView) findViewById(R.id.tv_right_margin);
-        final TextView tvImagePadding = (TextView) findViewById(R.id.tv_image_padding);
+        final TextView tvLeftMargin = findViewById(R.id.tv_left_margin);
+        final TextView tvRightMargin = findViewById(R.id.tv_right_margin);
+        final TextView tvImagePadding = findViewById(R.id.tv_image_padding);
         
-        SeekBar leftMarginSeekBar = (SeekBar) findViewById(R.id.left_margin_seekbar);
+        SeekBar leftMarginSeekBar = findViewById(R.id.left_margin_seekbar);
         leftMarginSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -195,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
             
             }
         });
-        SeekBar rightMarginSeekBar = (SeekBar) findViewById(R.id.right_margin_seekbar);
+        SeekBar rightMarginSeekBar = findViewById(R.id.right_margin_seekbar);
         rightMarginSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -215,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
             
             }
         });
-        SeekBar paddingSeekBar = (SeekBar) findViewById(R.id.padding_seekbar);
+        SeekBar paddingSeekBar = findViewById(R.id.padding_seekbar);
         paddingSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
