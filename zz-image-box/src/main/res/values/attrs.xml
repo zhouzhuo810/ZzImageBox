@@ -2,12 +2,24 @@
 <resources>
     <declare-styleable name="ZzImageBox">
         <attr name="zib_max_line" format="integer" />
-        <attr name="zib_img_size_one_line" format="integer" />
+        <attr name="zib_one_line_img_count" format="integer" />
+        <attr name="zib_max_img_count" format="integer" />
         <attr name="zib_img_padding" format="dimension|reference" />
         <attr name="zib_img_default" format="color|reference" />
         <attr name="zib_img_delete" format="color|reference" />
         <attr name="zib_img_add" format="color|reference" />
+        <attr name="zib_img_scale_type" format="enum">
+            <enum name="MATRIX" value="0"/>
+            <enum name="FIT_XY" value="1"/>
+            <enum name="FIT_START" value="2"/>
+            <enum name="FIT_CENTER" value="3"/>
+            <enum name="FIT_END" value="4"/>
+            <enum name="CENTER" value="5"/>
+            <enum name="CENTER_CROP" value="6"/>
+            <enum name="CENTER_INSIDE" value="7"/>
+        </attr>
         <attr name="zib_img_deletable" format="boolean" />
+        <attr name="zib_img_addable" format="boolean" />
         <attr name="zib_left_margin" format="dimension|reference" />
         <attr name="zib_right_margin" format="dimension|reference" />
         <attr name="zib_icon_color" format="color|reference" />

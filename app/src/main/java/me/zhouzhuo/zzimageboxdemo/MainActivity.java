@@ -27,9 +27,8 @@ public class MainActivity extends AppCompatActivity {
         
         rgNumbers.check(R.id.rb_number_three);
         
-        final ZzImageBox imageBoxAddMode = findViewById(R.id.zz_image_box_add_mode);
-        //如果加载网络图片，需要设置此代理
-        imageBoxAddMode.setOnlineImageLoader(new ZzImageBox.OnlineImageLoader() {
+        //如果统一加载网络图片，可以统一设置此代理
+        ZzImageBox.setGlobalOnLineImageLoader(new ZzImageBox.OnlineImageLoader() {
             @Override
             public void onLoadImage(ImageView iv, String url) {
                 Log.e("TTT", "url=" + url);
@@ -37,6 +36,17 @@ public class MainActivity extends AppCompatActivity {
                 Glide.with(MainActivity.this).load(url).into(iv);
             }
         });
+        
+        final ZzImageBox imageBoxAddMode = findViewById(R.id.zz_image_box_add_mode);
+        //如果加载网络图片，需要特殊处理，单独设置此代理
+        //        imageBoxAddMode.setOnlineImageLoader(new ZzImageBox.OnlineImageLoader() {
+        //            @Override
+        //            public void onLoadImage(ImageView iv, String url) {
+        //                Log.e("TTT", "url=" + url);
+        //                //本例使用Glide加载
+        //                Glide.with(MainActivity.this).load(url).into(iv);
+        //            }
+        //        });
         //点击监听
         imageBoxAddMode.setOnImageClickListener(new ZzImageBox.AbsOnImageClickListener() {
             
@@ -156,19 +166,19 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 switch (checkedId) {
                     case R.id.rb_number_three:
-                        imageBoxAddMode.setImageSizeOneLine(3);
-                        imageBoxShowMode.setImageSizeOneLine(3);
-                        imageBoxRight.setImageSizeOneLine(3);
+                        imageBoxAddMode.setOneLineImgCount(3);
+                        imageBoxShowMode.setOneLineImgCount(3);
+                        imageBoxRight.setOneLineImgCount(3);
                         break;
                     case R.id.rb_number_four:
-                        imageBoxAddMode.setImageSizeOneLine(4);
-                        imageBoxShowMode.setImageSizeOneLine(4);
-                        imageBoxRight.setImageSizeOneLine(4);
+                        imageBoxAddMode.setOneLineImgCount(4);
+                        imageBoxShowMode.setOneLineImgCount(4);
+                        imageBoxRight.setOneLineImgCount(4);
                         break;
                     case R.id.rb_number_five:
-                        imageBoxAddMode.setImageSizeOneLine(5);
-                        imageBoxShowMode.setImageSizeOneLine(5);
-                        imageBoxRight.setImageSizeOneLine(5);
+                        imageBoxAddMode.setOneLineImgCount(5);
+                        imageBoxShowMode.setOneLineImgCount(5);
+                        imageBoxRight.setOneLineImgCount(5);
                         break;
                 }
             }

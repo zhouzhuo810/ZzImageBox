@@ -25,7 +25,7 @@
 
 
 ```
-    implementation 'com.github.zhouzhuo810:ZzImageBox:1.2.2'
+    implementation 'com.github.zhouzhuo810:ZzImageBox:1.2.3'
     implementation 'androidx.recyclerview:recyclerview:1.1.0' //版本自己决定
 ```
 
@@ -57,12 +57,16 @@ xml:
         app:zib_left_margin="20dp"
         app:zib_right_margin="20dp"
         app:zib_img_padding="5dp"
-        app:zib_img_size_one_line="4"
+        app:zib_one_line_img_count="4"
         app:zib_max_line="3"
+        app:zib_img_scale_type="CENTER_CROP"
         app:zib_img_deletable="true"
+        app:zib_img_addable="true"
         app:zib_img_add="@drawable/iv_add"
         app:zib_img_default="@drawable/iv_default"
         app:zib_img_delete="@drawable/iv_delete"
+        tools:itemCount="3"
+        tools:listitem="@layout/zz_image_box_item"
         />
 ```
 
@@ -121,12 +125,23 @@ java:
 ```
     <declare-styleable name="ZzImageBox">
         <attr name="zib_max_line" format="integer" />
-        <attr name="zib_img_size_one_line" format="integer" />
+        <attr name="zib_one_line_img_count" format="integer" />
         <attr name="zib_img_padding" format="dimension|reference" />
         <attr name="zib_img_default" format="color|reference" />
         <attr name="zib_img_delete" format="color|reference" />
         <attr name="zib_img_add" format="color|reference" />
         <attr name="zib_img_deletable" format="boolean" />
+        <attr name="zib_img_addable" format="boolean" />
+        <attr name="zib_img_scale_type" format="enum">
+            <enum name="MATRIX" value="0"/>
+            <enum name="FIT_XY" value="1"/>
+            <enum name="FIT_START" value="2"/>
+            <enum name="FIT_CENTER" value="3"/>
+            <enum name="FIT_END" value="4"/>
+            <enum name="CENTER" value="5"/>
+            <enum name="CENTER_CROP" value="6"/>
+            <enum name="CENTER_INSIDE" value="7"/>
+        </attr>
         <attr name="zib_left_margin" format="dimension|reference" />
         <attr name="zib_right_margin" format="dimension|reference" />
         <attr name="zib_icon_color" format="color|reference" />
@@ -137,18 +152,24 @@ java:
 >| 属性名| 属性类型 | 属性功能 |
 >|:--------- |:-------------|:-----|
 >| zib_max_line | integer | 最大行数 |
->| zib_img_size_one_line | integer | 每行数量 |
+>| zib_one_line_img_count | integer | 每行数量 |
 >| zib_img_padding| dimension | 图片之间的间距 |
 >| zib_img_default | drawable/color | 默认图片资源id |
 >| zib_img_delete |drawable/color | 删除图片资源id |
 >| zib_img_add | drawable/color | 添加图片资源id |
 >| zib_icon_color | color | 添加图片的颜色 |
 >| zib_img_deletable |boolean | 是否显示删除图片 |
+>| zib_img_addable |boolean | 是否显示添加图片 |
+>| zib_img_scale_type| enum | 图片缩放类型 |
 >| zib_left_margin| dimension | 控件距离屏幕左边距离 |
 >| zib_right_margin| dimension | 控件距离屏幕右边距离 |
 
 
 ### 更新日志
+
+> v1.2.3
+- 添加图片缩放类型属性zib_img_scale_type；
+- 添加新增图片是否显示属性zib_img_addable；
 
 > v1.2.2
 - onDeleteClick回调方法中增加ImageView参数；
