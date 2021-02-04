@@ -1,5 +1,6 @@
 package me.zhouzhuo.zzimageboxdemo;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,11 +31,15 @@ public class MainActivity extends AppCompatActivity {
         //如果统一加载网络图片，可以统一设置此代理
         ZzImageBox.setGlobalOnLineImageLoader(new ZzImageBox.OnlineImageLoader() {
             @Override
-            public void onLoadImage(ImageView iv, String url) {
+            public void onLoadImage(Context context, ImageView iv, String url, int imgSize, int placeHolder) {
                 Log.e("TTT", "url=" + url);
                 //本例使用Glide加载
-                Glide.with(MainActivity.this).load(url).into(iv);
+                Glide.with(MainActivity.this).load(url)
+                    .override(imgSize, imgSize)
+                    .placeholder(placeHolder)
+                    .into(iv);
             }
+    
         });
         
         final ZzImageBox imageBoxAddMode = findViewById(R.id.zz_image_box_add_mode);
@@ -110,16 +115,6 @@ public class MainActivity extends AppCompatActivity {
          *            app:zib_img_deletable="false"
          */
         final ZzImageBox imageBoxShowMode = findViewById(R.id.zz_image_box_show_mode);
-        //如果加载网络图片，需要设置此代理
-        imageBoxShowMode.setOnlineImageLoader(new ZzImageBox.OnlineImageLoader() {
-            @Override
-            public void onLoadImage(ImageView iv, String url) {
-                Log.e("TTT", "url=" + url);
-                //本例使用Glide加载
-                Glide.with(MainActivity.this).clear(iv);
-                Glide.with(MainActivity.this).load(url).into(iv);
-            }
-        });
         
         //因为有阿里OSS服务的需求，因此加了此方法，强制使用网络加载；imageBoxShowMode.addImage如果http开头会默认请求网络；否则默认为本地文件；
         imageBoxShowMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
@@ -148,14 +143,6 @@ public class MainActivity extends AppCompatActivity {
         
         final ZzImageBox imageBoxRight = findViewById(R.id.zz_image_box_right);
         //如果加载网络图片，需要设置此代理
-        imageBoxRight.setOnlineImageLoader(new ZzImageBox.OnlineImageLoader() {
-            @Override
-            public void onLoadImage(ImageView iv, String url) {
-                Log.e("TTT", "url=" + url);
-                //本例使用Glide加载
-                Glide.with(MainActivity.this).load(url).into(iv);
-            }
-        });
         imageBoxRight.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
         imageBoxRight.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
         imageBoxRight.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");

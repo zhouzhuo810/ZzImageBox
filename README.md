@@ -25,7 +25,7 @@
 
 
 ```
-    implementation 'com.github.zhouzhuo810:ZzImageBox:1.2.3'
+    implementation 'com.github.zhouzhuo810:ZzImageBox:1.2.4'
     implementation 'androidx.recyclerview:recyclerview:1.1.0' //版本自己决定
 ```
 
@@ -73,16 +73,27 @@ xml:
 
 java:
 
+### 全局图片加载器
+
 ```java
-        final ZzImageBox imageBox = (ZzImageBox) findViewById(R.id.zz_image_box);
         //如果需要加载网络图片，添加此监听。
-        imageBox.setOnlineImageLoader(new ZzImageBox.OnlineImageLoader() {
+        imageBox.setGlobalOnLineImageLoader(new ZzImageBox.OnlineImageLoader() {
             @Override
-            public void onLoadImage(ImageView iv, String url) {
+            public void onLoadImage(Context context, ImageView iv, String url, int imgSize, int placeHolder) {
                 Log.d("ZzImageBox", "url=" + url);
-                Glide.with(MainActivity.this).load(url).into(iv);
+                Glide.with(MainActivity.this)
+                    .load(url)
+                    .override(imgSize, imgSize)
+                    .placeholder(placeHolder)
+                    .into(iv);
             }
         });
+```
+
+### 设置图片点击或长按监听
+
+```java
+        final ZzImageBox imageBox = (ZzImageBox) findViewById(R.id.zz_image_box);
         imageBoxAddMode.setOnImageClickListener(new ZzImageBox.OnImageClickListener() {
             @Override
             public void onImageClick(int position, String url, String realPath, int realType, ImageView iv, String tag) {
@@ -166,6 +177,9 @@ java:
 
 
 ### 更新日志
+
+> v1.2.4
+- 修改在线加载回调方法；
 
 > v1.2.3
 - 添加图片缩放类型属性zib_img_scale_type；

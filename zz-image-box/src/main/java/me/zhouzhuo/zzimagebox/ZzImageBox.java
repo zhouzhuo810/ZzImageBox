@@ -70,7 +70,7 @@ public class ZzImageBox extends RecyclerView {
     }
     
     public interface OnlineImageLoader {
-        void onLoadImage(ImageView iv, String url);
+        void onLoadImage(Context context, ImageView iv, String url, int imgSize, int placeHolder);
     }
     
     private void init(Context context, AttributeSet attrs) {
@@ -892,6 +892,7 @@ public class ZzImageBox extends RecyclerView {
         private static final int ITEM_TYPE_NORMAL = 0;
         private static final int ITEM_TYPE_ADD = 1;
         
+        private Context mContext;
         private final LayoutInflater mInflater;
         private List<ImageEntity> mDataSource;
         private ImageView.ScaleType mImgScaleType = ImageView.ScaleType.CENTER_CROP;
@@ -915,6 +916,7 @@ public class ZzImageBox extends RecyclerView {
         MyAdapter(Context context, int boxWidth, List<ImageEntity> mDatas, ImageView.ScaleType scaleType, int oneLineImgCount,
                   int maxImgCount, int defaultPicId, int deletePicId, int mAddPicId, boolean deletable, boolean addable, int padding,
                   int leftMargin, int rightMargin, int maxLine, int iconColor, OnImageClickListener listener, OnlineImageLoader imageLoader) {
+            this.mContext = context;
             mInflater = LayoutInflater.from(context);
             this.mDataSource = mDatas;
             this.mImgScaleType = scaleType;
@@ -1071,7 +1073,7 @@ public class ZzImageBox extends RecyclerView {
                 if (url != null && url.length() != 0) {
                     if (url.startsWith("http") || forceOnLine) {
                         if (mImageLoader != null) {
-                            mImageLoader.onLoadImage(holder.ivPic, url);
+                            mImageLoader.onLoadImage(mContext ,holder.ivPic, url, mPicWidth, mDefaultPicId == -1 ? R.drawable.iv_default : mDefaultPicId);
                         } else {
                             holder.ivPic.setImageResource(mDefaultPicId == -1 ? R.drawable.iv_default : mDefaultPicId);
                         }
