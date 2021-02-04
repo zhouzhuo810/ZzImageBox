@@ -25,7 +25,7 @@
 
 
 ```
-    implementation 'com.github.zhouzhuo810:ZzImageBox:1.2.4'
+    implementation 'com.github.zhouzhuo810:ZzImageBox:1.2.5'
     implementation 'androidx.recyclerview:recyclerview:1.1.0' //版本自己决定
 ```
 
