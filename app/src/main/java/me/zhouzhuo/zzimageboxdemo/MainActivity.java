@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import me.zhouzhuo.zzimagebox.ZzImageBox;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         rgNumbers.check(R.id.rb_number_three);
         
         //如果统一加载网络图片，可以统一设置此代理
-        ZzImageBox.setGlobalOnLineImageLoader(new ZzImageBox.OnlineImageLoader() {
+        ZzImageBox.setGlobalOnLineImageLoader(new ZzImageBox.ImageLoader() {
             @Override
             public void onLoadImage(Context context, ImageView iv, String url, int imgSize, int placeHolder) {
                 Log.e("TTT", "url=" + url);
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                     .placeholder(placeHolder)
                     .into(iv);
             }
-    
+            
         });
         
         final ZzImageBox imageBoxAddMode = findViewById(R.id.zz_image_box_add_mode);
@@ -55,28 +56,28 @@ public class MainActivity extends AppCompatActivity {
         //点击监听
         imageBoxAddMode.setOnImageClickListener(new ZzImageBox.AbsOnImageClickListener() {
             
-            @Override
-            public void onImageClick(int position, String url, String realPath, int realType, ImageView iv, String tag) {
-                Toast.makeText(MainActivity.this, "你点击了+" + position + "的图片:url=" + url + ", tag=" + tag, Toast.LENGTH_SHORT).show();
-            }
             
             @Override
-            public void onDeleteClick(ImageView ivPic, int position, String url, String realPath, int realType, String tag) {
-                super.onDeleteClick(ivPic, position, url, realPath, realType, tag);
-                Glide.with(MainActivity.this).clear(ivPic);
-                Toast.makeText(MainActivity.this.getApplicationContext(), "tag=" + tag + ", type=" + realType, Toast.LENGTH_SHORT).show();
+            public void onDeleteClick(ImageView iv, int position, String url, @Nullable Bundle args) {
+                super.onDeleteClick(iv, position, url, args);
+                Glide.with(MainActivity.this).clear(iv);
+                Toast.makeText(MainActivity.this, "你点击了+" + position + "的图片:url=" + url + ", args=" + (args == null ? null : args.toString()), Toast.LENGTH_SHORT).show();
                 //移除position位置的图片
                 imageBoxAddMode.removeImage(position);
             }
             
             @Override
+            public void onImageClick(int position, String url, ImageView iv, @Nullable Bundle args) {
+                Toast.makeText(MainActivity.this, "你点击了+" + position + "的图片:url=" + url + ", args=" + (args == null ? null : args.toString()), Toast.LENGTH_SHORT).show();
+            }
+            
+            @Override
             public void onAddClick() {
-                //添加网络图片
                 //                imageBoxAddMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
                 if (imageBoxAddMode.getCount() % 2 == 0) {
-                    imageBoxAddMode.addImageOnlineWithRealPathAndType("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg", "tag" + imageBoxAddMode.getCount(), imageBoxAddMode.getCount());
+                    imageBoxAddMode.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
                 } else {
-                    imageBoxAddMode.addImageOnlineWithRealPathAndType("https://p.ssl.qhimg.com/dm/420_627_/t01b998f20bf6fcbfd4.jpg", "tag" + imageBoxAddMode.getCount(), imageBoxAddMode.getCount());
+                    imageBoxAddMode.addImage("https://p.ssl.qhimg.com/dm/420_627_/t01b998f20bf6fcbfd4.jpg");
                 }
             }
             
@@ -87,9 +88,9 @@ public class MainActivity extends AppCompatActivity {
             }
             
             @Override
-            public void onImageLongPress(final int position, String url, String realPath, int realType, ImageView iv, String tag) {
-                super.onImageLongPress(position, url, realPath, realType, iv, tag);
-                Toast.makeText(MainActivity.this, "你长按了+" + position + "的图片:url=" + url + ", tag=" + tag, Toast.LENGTH_SHORT).show();
+            public void onImageLongPress(final int position, String url, ImageView iv, @Nullable Bundle args) {
+                super.onImageLongPress(position, url, iv, args);
+                Toast.makeText(MainActivity.this, "你长按了+" + position + "的图片:url=" + url + ", args=" + (args == null ? null : args.toString()), Toast.LENGTH_SHORT).show();
                 new AlertDialog.Builder(MainActivity.this)
                     .setItems(new String[]{"左移", "右移"}, new DialogInterface.OnClickListener() {
                         @Override
@@ -117,36 +118,28 @@ public class MainActivity extends AppCompatActivity {
         final ZzImageBox imageBoxShowMode = findViewById(R.id.zz_image_box_show_mode);
         
         //因为有阿里OSS服务的需求，因此加了此方法，强制使用网络加载；imageBoxShowMode.addImage如果http开头会默认请求网络；否则默认为本地文件；
-        imageBoxShowMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
-        imageBoxShowMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
-        imageBoxShowMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
-        imageBoxShowMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+        imageBoxShowMode.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+        imageBoxShowMode.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+        imageBoxShowMode.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+        imageBoxShowMode.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
         
         //点击监听
         imageBoxShowMode.setOnImageClickListener(new ZzImageBox.AbsOnImageClickListener() {
             
             @Override
-            public void onImageClick(int position, String url, String realPath, int realType, ImageView iv, String tag) {
-                Toast.makeText(MainActivity.this, "你点击了+" + position + "的图片:url=" + url + ", tag=" + tag, Toast.LENGTH_SHORT).show();
+            public void onImageClick(int position, String url, ImageView iv, @Nullable Bundle args) {
+                Toast.makeText(MainActivity.this, "你点击了+" + position + "的图片:url=" + url + ", args=" + (args == null ? null : args.toString()), Toast.LENGTH_SHORT).show();
             }
             
-            @Override
-            public void onDeleteClick(int position, String url, String realPath, int realType, String tag) {
-            
-            }
-            
-            @Override
-            public void onAddClick() {
-            }
         });
         
         
         final ZzImageBox imageBoxRight = findViewById(R.id.zz_image_box_right);
         //如果加载网络图片，需要设置此代理
-        imageBoxRight.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
-        imageBoxRight.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
-        imageBoxRight.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
-        imageBoxRight.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+        imageBoxRight.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+        imageBoxRight.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+        imageBoxRight.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+        imageBoxRight.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
         
         rgNumbers.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
