@@ -54,8 +54,6 @@ xml:
         android:id="@+id/zz_image_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:zib_left_margin="20dp"
-        app:zib_right_margin="20dp"
         app:zib_img_padding="5dp"
         app:zib_one_line_img_count="4"
         app:zib_max_line="3"

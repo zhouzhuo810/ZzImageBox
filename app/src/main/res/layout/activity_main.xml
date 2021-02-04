@@ -272,10 +272,9 @@
                 app:zib_img_padding="10dp"
                 app:zib_img_addable="true"
                 app:zib_img_scale_type="CENTER_CROP"
-                app:zib_left_margin="0dp"
-                app:zib_max_line="2"
+                app:zib_max_line="1"
+                app:zib_max_img_count="5"
                 app:zib_one_line_img_count="3"
-                app:zib_right_margin="0dp"
                 tools:itemCount="3"
                 tools:listitem="@layout/zz_image_box_item" />
 
@@ -309,10 +308,9 @@
                 app:zib_img_default="@drawable/iv_default"
                 app:zib_img_deletable="false"
                 app:zib_img_padding="0dp"
-                app:zib_left_margin="0dp"
                 app:zib_max_line="2"
                 app:zib_one_line_img_count="3"
-                app:zib_right_margin="0dp" />
+                />
 
 
             <LinearLayout
@@ -336,10 +334,8 @@
                     app:zib_img_default="@drawable/iv_default"
                     app:zib_img_deletable="false"
                     app:zib_img_padding="0dp"
-                    app:zib_left_margin="0dp"
                     app:zib_max_line="2"
-                    app:zib_one_line_img_count="3"
-                    app:zib_right_margin="0dp" />
+                    app:zib_one_line_img_count="3" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
