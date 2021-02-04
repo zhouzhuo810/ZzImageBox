@@ -41,8 +41,6 @@
 
 
 #### 注意：
-- ZzImageBox的marginLeft属性使用zib_left_margin代替；
-- ZzImageBox的marginRight属性使用zib_right_margin代替；
 - 如果不需要显示添加图片，可以设置zib_img_add为透明颜色；
 - 加载网络图片必须添加`.setOnlineImageLoader();`方法，
 在`onLoadImage(ImageView iv, String url)`中自行使用Glide等框架加载；
