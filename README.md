@@ -25,7 +25,7 @@
 
 
 ```
-    implementation 'com.github.zhouzhuo810:ZzImageBox:1.2.5'
+    implementation 'com.github.zhouzhuo810:ZzImageBox:1.2.6'
     implementation 'androidx.recyclerview:recyclerview:1.1.0' //版本自己决定
 ```
 
@@ -137,12 +137,11 @@ java:
     <declare-styleable name="ZzImageBox">
         <attr name="zib_max_line" format="integer" />
         <attr name="zib_one_line_img_count" format="integer" />
+        <attr name="zib_max_img_count" format="integer" />
         <attr name="zib_img_padding" format="dimension|reference" />
         <attr name="zib_img_default" format="color|reference" />
         <attr name="zib_img_delete" format="color|reference" />
         <attr name="zib_img_add" format="color|reference" />
-        <attr name="zib_img_deletable" format="boolean" />
-        <attr name="zib_img_addable" format="boolean" />
         <attr name="zib_img_scale_type" format="enum">
             <enum name="MATRIX" value="0"/>
             <enum name="FIT_XY" value="1"/>
@@ -153,8 +152,8 @@ java:
             <enum name="CENTER_CROP" value="6"/>
             <enum name="CENTER_INSIDE" value="7"/>
         </attr>
-        <attr name="zib_left_margin" format="dimension|reference" />
-        <attr name="zib_right_margin" format="dimension|reference" />
+        <attr name="zib_img_deletable" format="boolean" />
+        <attr name="zib_img_addable" format="boolean" />
         <attr name="zib_icon_color" format="color|reference" />
     </declare-styleable>
 ```
@@ -172,11 +171,13 @@ java:
 >| zib_img_deletable |boolean | 是否显示删除图片 |
 >| zib_img_addable |boolean | 是否显示添加图片 |
 >| zib_img_scale_type| enum | 图片缩放类型 |
->| zib_left_margin| dimension | 控件距离屏幕左边距离 |
->| zib_right_margin| dimension | 控件距离屏幕右边距离 |
 
 
 ### 更新日志
+
+> v1.2.6
+- 移除zib_left_margin和zib_right_margin属性；
+- 新增`setBoxLeftPadding`、`setBoxRightPadding`、`setBoxTopPadding`、`setBoxBottomPadding`四个方法。
 
 > v1.2.5
 - 移除Uri操作；

@@ -40,8 +40,6 @@ public class ZzImageBox extends RecyclerView {
     private int mIconColor;
     private int mOneLineImgCount;
     private int mPadding;
-    private int mLeftMargin;
-    private int mRightMargin;
     private int mDefaultPicId = -1;
     private int mDeletePicId = -1;
     private int mAddPicId = -1;
@@ -84,8 +82,6 @@ public class ZzImageBox extends RecyclerView {
     
     private void init(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ZzImageBox);
-        mLeftMargin = a.getDimensionPixelSize(R.styleable.ZzImageBox_zib_left_margin, 0);
-        mRightMargin = a.getDimensionPixelSize(R.styleable.ZzImageBox_zib_right_margin, 0);
         mMaxLine = a.getInteger(R.styleable.ZzImageBox_zib_max_line, DEFAULT_MAX_LINE);
         mOneLineImgCount = a.getInteger(R.styleable.ZzImageBox_zib_one_line_img_count, DEFAULT_IMAGE_SIZE);
         mMaxImgCount = a.getInteger(R.styleable.ZzImageBox_zib_max_img_count, 0);
@@ -136,9 +132,8 @@ public class ZzImageBox extends RecyclerView {
         mDataSource = new ArrayList<>();
         setHasFixedSize(true);
         setLayoutManager(new GridLayoutManager(context, mOneLineImgCount));
-        setPadding(mLeftMargin, 0, mRightMargin, 0);
         mAdapter = new MyAdapter(context, getBoxWidth(), mDataSource, mImgScaleType, mOneLineImgCount, mMaxImgCount, mDefaultPicId,
-            mDeletePicId, mAddPicId, mDeletable, mAddable, mPadding, mLeftMargin, mRightMargin,
+            mDeletePicId, mAddPicId, mDeletable, mAddable, mPadding, getPaddingStart(), getPaddingEnd(),
             mMaxLine, mIconColor, mClickListener, mImageLoader);
         if (sGlobalOnLineImageLoader != null) {
             mAdapter.setImageLoader(sGlobalOnLineImageLoader);
@@ -533,7 +528,7 @@ public class ZzImageBox extends RecyclerView {
             setLayoutManager(new GridLayoutManager(getContext(), maxSize));
             if (mAdapter == null) {
                 mAdapter = new MyAdapter(getContext(), getBoxWidth(), mDataSource, mImgScaleType, mOneLineImgCount, mMaxImgCount,
-                    mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mAddable, mPadding, mLeftMargin, mRightMargin, mMaxLine,
+                    mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mAddable, mPadding, getPaddingStart(), getPaddingEnd(), mMaxLine,
                     mIconColor, mClickListener, mImageLoader);
             } else {
                 mAdapter.setOneLineImgCount(mOneLineImgCount);
@@ -547,30 +542,6 @@ public class ZzImageBox extends RecyclerView {
     }
     
     /**
-     * 设置左边距
-     */
-    public ZzImageBox setLeftMarginInPixel(int leftMarginPx) {
-        this.mLeftMargin = leftMarginPx;
-        setPadding(this.mLeftMargin, 0, this.mRightMargin, 0);
-        mAdapter.setLeftMargin(this.mLeftMargin);
-        mAdapter.notifyDataSetChanged();
-        return this;
-    }
-    
-    /**
-     * 设置右边距
-     */
-    public ZzImageBox setRightMarginInPixel(int rightMarginPx) {
-        this.mRightMargin = rightMarginPx;
-        setPadding(this.mLeftMargin, 0, this.mRightMargin, 0);
-        if (mAdapter != null) {
-            mAdapter.setRightMargin(this.mRightMargin);
-            mAdapter.notifyDataSetChanged();
-        }
-        return this;
-    }
-    
-    /**
      * 设置图片之间的padding
      */
     public ZzImageBox setImagePadding(int imagePadding) {
@@ -578,7 +549,59 @@ public class ZzImageBox extends RecyclerView {
     }
     
     /**
-     * Set the padding of each one image.
+     * 设置左padding
+     *
+     * @param padding 边距,单位px
+     * @return ZzImageBox
+     */
+    public ZzImageBox setBoxLeftPadding(int padding) {
+        if (mAdapter != null) {
+            mAdapter.setLeftMargin(padding);
+            mAdapter.notifyDataSetChanged();
+        }
+        setPadding(padding, getPaddingTop(), getPaddingRight(), getPaddingBottom());
+        return this;
+    }
+    
+    /**
+     * 设置右padding
+     *
+     * @param padding 边距,单位px
+     * @return ZzImageBox
+     */
+    public ZzImageBox setBoxRightPadding(int padding) {
+        if (mAdapter != null) {
+            mAdapter.setRightMargin(padding);
+            mAdapter.notifyDataSetChanged();
+        }
+        setPadding(getPaddingLeft(), getPaddingTop(), padding, getPaddingBottom());
+        return this;
+    }
+    
+    /**
+     * 设置上padding
+     *
+     * @param padding 边距,单位px
+     * @return ZzImageBox
+     */
+    public ZzImageBox setBoxTopPadding(int padding) {
+        setPadding(getPaddingLeft(), padding, getPaddingRight(), getPaddingBottom());
+        return this;
+    }
+    
+    /**
+     * 设置下padding
+     *
+     * @param padding 边距,单位px
+     * @return ZzImageBox
+     */
+    public ZzImageBox setBoxBottomPadding(int padding) {
+        setPadding(getPaddingLeft(), getPaddingTop(), getPaddingRight(), padding);
+        return this;
+    }
+    
+    /**
+     * 设置图片之间的间隙，单位px
      *
      * @param imagePadding padding value.
      */

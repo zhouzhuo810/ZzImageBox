@@ -166,15 +166,17 @@ public class MainActivity extends AppCompatActivity {
         
         final TextView tvLeftMargin = findViewById(R.id.tv_left_margin);
         final TextView tvRightMargin = findViewById(R.id.tv_right_margin);
+        final TextView tvTopMargin = findViewById(R.id.tv_top_margin);
+        final TextView tvBottomMargin = findViewById(R.id.tv_bottom_margin);
         final TextView tvImagePadding = findViewById(R.id.tv_image_padding);
         
         SeekBar leftMarginSeekBar = findViewById(R.id.left_margin_seekbar);
         leftMarginSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                imageBoxAddMode.setLeftMarginInPixel(progress);
-                imageBoxShowMode.setLeftMarginInPixel(progress);
-                imageBoxRight.setLeftMarginInPixel(progress);
+                imageBoxAddMode.setBoxLeftPadding(progress);
+                imageBoxShowMode.setBoxLeftPadding(progress);
+                imageBoxRight.setBoxLeftPadding(progress);
                 tvLeftMargin.setText(progress + " px");
             }
             
@@ -192,10 +194,50 @@ public class MainActivity extends AppCompatActivity {
         rightMarginSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                imageBoxAddMode.setRightMarginInPixel(progress);
-                imageBoxShowMode.setRightMarginInPixel(progress);
-                imageBoxRight.setRightMarginInPixel(progress);
+                imageBoxAddMode.setBoxRightPadding(progress);
+                imageBoxShowMode.setBoxRightPadding(progress);
+                imageBoxRight.setBoxRightPadding(progress);
                 tvRightMargin.setText(progress + " px");
+            }
+            
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            
+            }
+            
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            
+            }
+        });
+        SeekBar topMarginSeekBar = findViewById(R.id.top_margin_seekbar);
+        topMarginSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                imageBoxAddMode.setBoxTopPadding(progress);
+                imageBoxShowMode.setBoxTopPadding(progress);
+                imageBoxRight.setBoxTopPadding(progress);
+                tvTopMargin.setText(progress + " px");
+            }
+            
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            
+            }
+            
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            
+            }
+        });
+        SeekBar bottomMarginSeekBar = findViewById(R.id.bottom_margin_seekbar);
+        bottomMarginSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                imageBoxAddMode.setBoxBottomPadding(progress);
+                imageBoxShowMode.setBoxBottomPadding(progress);
+                imageBoxRight.setBoxBottomPadding(progress);
+                tvBottomMargin.setText(progress + " px");
             }
             
             @Override
