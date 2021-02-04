@@ -70,6 +70,15 @@ public class ZzImageBox extends RecyclerView {
     }
     
     public interface ImageLoader {
+        /**
+         * 图片加载
+         *
+         * @param context     上下文
+         * @param iv          ImageView
+         * @param url         Url
+         * @param imgSize     图片尺寸
+         * @param placeHolder 占位图片
+         */
         void onLoadImage(Context context, ImageView iv, String url, int imgSize, int placeHolder);
     }
     

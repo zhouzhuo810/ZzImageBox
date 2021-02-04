@@ -93,25 +93,26 @@ java:
 ### 设置图片点击或长按监听
 
 ```java
-        final ZzImageBox imageBox = (ZzImageBox) findViewById(R.id.zz_image_box);
-        imageBoxAddMode.setOnImageClickListener(new ZzImageBox.OnImageClickListener() {
-            @Override
-            public void onImageClick(int position, String url, String realPath, int realType, ImageView iv, String tag) {
-                Toast.makeText(MainActivity.this, "你点击了+" + position + "的图片:url=" + filePath + ", tag=" + tag, Toast.LENGTH_SHORT).show();
-            }
 
+        final ZzImageBox imageBoxAddMode = findViewById(R.id.zz_image_box_add_mode);
+        imageBoxAddMode.setOnImageClickListener(new ZzImageBox.AbsOnImageClickListener() {
             @Override
-            public void onDeleteClick(int position, String url, String realPath, int realType, String tag) {
-                Toast.makeText(MainActivity.this.getApplicationContext(), "tag=" + tag + ", type=" + type, Toast.LENGTH_SHORT).show();
+            public void onDeleteClick(ImageView iv, int position, String url, @Nullable Bundle args) {
+                super.onDeleteClick(iv, position, url, args);
+                Glide.with(MainActivity.this).clear(iv);
+                Toast.makeText(MainActivity.this, "你点击了+" + position + "的图片:url=" + url + ", args=" + (args == null ? null : args.toString()), Toast.LENGTH_SHORT).show();
                 //移除position位置的图片
                 imageBoxAddMode.removeImage(position);
             }
 
             @Override
+            public void onImageClick(int position, String url, ImageView iv, @Nullable Bundle args) {
+                Toast.makeText(MainActivity.this, "你点击了+" + position + "的图片:url=" + url + ", args=" + (args == null ? null : args.toString()), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
             public void onAddClick() {
-                //添加网络图片
-//                imageBoxAddMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
-                imageBoxAddMode.addImageOnlineWithRealPathAndType("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg", "tag" + imageBoxAddMode.getCount(), imageBoxAddMode.getCount());
+                imageBoxAddMode.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
             }
 
             @Override
@@ -121,10 +122,9 @@ java:
             }
 
             @Override
-            public void onImageLongPress(int position, String url, String realPath, int realType, ImageView iv, String tag) {
-                super.onImageLongPress(position, url, realPath, realType, iv, tag);
-                Toast.makeText(MainActivity.this, "你长按了+" + position + "的图片:url=" + url + ", tag=" + tag, Toast.LENGTH_SHORT).show();
-
+            public void onImageLongPress(final int position, String url, ImageView iv, @Nullable Bundle args) {
+                super.onImageLongPress(position, url, iv, args);
+                Toast.makeText(MainActivity.this, "你长按了+" + position + "的图片:url=" + url + ", args=" + (args == null ? null : args.toString()), Toast.LENGTH_SHORT).show();
             }
         });
 
