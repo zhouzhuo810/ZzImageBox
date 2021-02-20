@@ -393,10 +393,50 @@ public class ZzImageBox extends RecyclerView {
     
     
     /**
-     * 新增网络图片url
+     * 新增图片url
      */
     public ZzImageBox addImage(@NonNull String imgUrl) {
         return addImageWithArgs(imgUrl, null);
+    }
+    
+    /**
+     * 新增多个图片url
+     */
+    public ZzImageBox addImages(String... imgUrls) {
+        if (sGlobalOnLineImageLoader != null && mAdapter.mImageLoader == null) {
+            mAdapter.setImageLoader(sGlobalOnLineImageLoader);
+        }
+        if (imgUrls != null) {
+            for (String url : imgUrls) {
+                if (mDataSource != null && mDataSource.size() < getMaxCount()) {
+                    ImageEntity entity = new ImageEntity();
+                    entity.setPicUrl(url);
+                    this.mDataSource.add(entity);
+                }
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+        return this;
+    }
+    
+    /**
+     * 新增多个图片url
+     */
+    public ZzImageBox addImages(@NonNull List<String> imgUrls) {
+        if (sGlobalOnLineImageLoader != null && mAdapter.mImageLoader == null) {
+            mAdapter.setImageLoader(sGlobalOnLineImageLoader);
+        }
+        if (imgUrls != null) {
+            for (String url : imgUrls) {
+                if (mDataSource != null && mDataSource.size() < getMaxCount()) {
+                    ImageEntity entity = new ImageEntity();
+                    entity.setPicUrl(url);
+                    this.mDataSource.add(entity);
+                }
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+        return this;
     }
     
     
