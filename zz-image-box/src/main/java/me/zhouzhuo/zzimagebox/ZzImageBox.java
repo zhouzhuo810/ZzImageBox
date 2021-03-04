@@ -18,6 +18,7 @@ import java.util.List;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -480,14 +481,17 @@ public class ZzImageBox extends RecyclerView {
     
     @Override
     protected void onMeasure(int widthSpec, int heightSpec) {
-        super.onMeasure(widthSpec, heightSpec);
         if (mAdapter != null) {
-            if (mAdapter.mBoxWidth == 0) {
-                mAdapter.mBoxWidth = getBoxWidth();
+            final int width = LayoutManager.chooseSize(widthSpec,
+                getPaddingLeft() + getPaddingRight(),
+                ViewCompat.getMinimumWidth(this));
+            if (mAdapter.mBoxWidth != width) {
+                mAdapter.mBoxWidth = width;
                 mAdapter.setOneLineImgCount(mAdapter.mOneLineImgCount);
                 mAdapter.notifyDataSetChanged();
             }
         }
+        super.onMeasure(widthSpec, heightSpec);
     }
     
     public interface OnImageClickListener {

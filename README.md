@@ -25,7 +25,7 @@
 
 
 ```
-    implementation 'com.github.zhouzhuo810:ZzImageBox:1.2.7'
+    implementation 'com.github.zhouzhuo810:ZzImageBox:1.2.8'
     implementation 'androidx.recyclerview:recyclerview:1.1.0' //版本自己决定
 ```
 
@@ -170,6 +170,9 @@ java:
 
 
 ### 更新日志
+
+> v1.2.8
+- 修复嵌套ScrollView且初始化时高度显示异常的问题；
 
 > v1.2.7
 - 支持一次性添加多个图片；
