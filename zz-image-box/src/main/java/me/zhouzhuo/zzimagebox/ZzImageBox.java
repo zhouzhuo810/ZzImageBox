@@ -78,7 +78,7 @@ public class ZzImageBox extends RecyclerView {
          * @param imgSize     图片尺寸
          * @param placeHolder 占位图片
          */
-        void onLoadImage(Context context, ImageView iv, String url, int imgSize, int placeHolder);
+        void onLoadImage(Context context, ImageView iv, @Nullable String url, int imgSize, int placeHolder);
     }
     
     private void init(Context context, AttributeSet attrs) {
@@ -913,9 +913,6 @@ public class ZzImageBox extends RecyclerView {
                 layoutParams.height = size;
                 ivDel.setLayoutParams(layoutParams);
             }
-            View group = holder.itemView.findViewById(R.id.item_root);
-            int w = group.getMeasuredWidth();
-            int h = group.getMeasuredHeight();
             int type = getItemViewType(holder.getAdapterPosition());
             if (type == ITEM_TYPE_ADD) {
                 holder.ivPic.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -944,12 +941,8 @@ public class ZzImageBox extends RecyclerView {
                 holder.ivPic.setScaleType(mImgScaleType);
                 String url = mDataSource.get(holder.getAdapterPosition()).getPicUrl();
                 
-                if (url != null && url.length() != 0) {
-                    if (mImageLoader != null) {
-                        mImageLoader.onLoadImage(mContext, holder.ivPic, url, mPicSize, mDefaultPicId == -1 ? R.drawable.iv_default : mDefaultPicId);
-                    } else {
-                        holder.ivPic.setImageResource(mDefaultPicId == -1 ? R.drawable.iv_default : mDefaultPicId);
-                    }
+                if (mImageLoader != null) {
+                    mImageLoader.onLoadImage(mContext, holder.ivPic, url, mPicSize, mDefaultPicId == -1 ? R.drawable.iv_default : mDefaultPicId);
                 } else {
                     holder.ivPic.setImageResource(mDefaultPicId == -1 ? R.drawable.iv_default : mDefaultPicId);
                 }
