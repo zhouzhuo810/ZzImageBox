@@ -72,8 +72,8 @@ java:
 ### 全局图片加载器
 
 ```java
-        //如果需要加载网络图片，添加此监听。
-        imageBox.setGlobalOnLineImageLoader(new ZzImageBox.OnlineImageLoader() {
+        //如果需要加载网络图片，添加此监听。建议在Application中添加
+        ZzImageBox.setGlobalOnLineImageLoader(new ZzImageBox.OnlineImageLoader() {
             @Override
             public void onLoadImage(Context context, ImageView iv, String url, int imgSize, int placeHolder) {
                 Log.d("ZzImageBox", "url=" + url);
