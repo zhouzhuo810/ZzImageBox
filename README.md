@@ -25,8 +25,8 @@
 
 
 ```
-    implementation 'com.github.zhouzhuo810:ZzImageBox:1.2.9'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0' //版本自己决定
+    implementation 'com.github.zhouzhuo810:ZzImageBox:1.3.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0' //版本自己决定
 ```
 
 
@@ -77,7 +77,7 @@ java:
             @Override
             public void onLoadImage(Context context, ImageView iv, String url, int imgSize, int placeHolder) {
                 Log.d("ZzImageBox", "url=" + url);
-                Glide.with(MainActivity.this)
+                Glide.with(context)
                     .load(url)
                     .override(imgSize, imgSize)
                     .placeholder(placeHolder)
@@ -170,6 +170,9 @@ java:
 
 
 ### 更新日志
+
+> v1.3.0
+- 修复 zib_img_padding 的值过大时，图片显示比例不正确问题；
 
 > v1.2.9
 - url为空时如果设置了ImageLoader，直接交给imageLoader处理；

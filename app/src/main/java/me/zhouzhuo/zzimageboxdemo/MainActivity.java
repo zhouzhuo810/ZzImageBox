@@ -33,9 +33,8 @@ public class MainActivity extends AppCompatActivity {
         ZzImageBox.setGlobalOnLineImageLoader(new ZzImageBox.ImageLoader() {
             @Override
             public void onLoadImage(Context context, ImageView iv, String url, int imgSize, int placeHolder) {
-                Log.e("TTT", "url=" + url);
                 //本例使用Glide加载
-                Glide.with(MainActivity.this).load(url)
+                Glide.with(context).load(url)
                     .override(imgSize, imgSize)
                     .placeholder(placeHolder)
                     .into(iv);
@@ -73,12 +72,12 @@ public class MainActivity extends AppCompatActivity {
             
             @Override
             public void onAddClick() {
-                //                imageBoxAddMode.addImageOnline("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
-                if (imageBoxAddMode.getCount() % 2 == 0) {
-                    imageBoxAddMode.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
-                } else {
-                    imageBoxAddMode.addImage("https://p.ssl.qhimg.com/dm/420_627_/t01b998f20bf6fcbfd4.jpg");
-                }
+                imageBoxAddMode.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+                // if (imageBoxAddMode.getCount() % 2 == 0) {
+                //     imageBoxAddMode.addImage("http://p1.so.qhimg.com/dmfd/290_339_/t01e15e0f1015e44e41.jpg");
+                // } else {
+                //     imageBoxAddMode.addImage("https://p.ssl.qhimg.com/dm/420_627_/t01b998f20bf6fcbfd4.jpg");
+                // }
             }
             
             @Override
@@ -255,8 +254,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 imageBoxAddMode.setImagePadding(progress);
-                imageBoxShowMode.setImagePadding(progress);
-                imageBoxRight.setImagePadding(progress);
+                // imageBoxShowMode.setImagePadding(progress);
+                // imageBoxRight.setImagePadding(progress);
                 tvImagePadding.setText(progress + " px");
             }
             
