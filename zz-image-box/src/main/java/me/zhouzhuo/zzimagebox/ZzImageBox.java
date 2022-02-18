@@ -973,7 +973,10 @@ public class ZzImageBox extends RecyclerView {
                     @Override
                     public void onClick(View v) {
                         if (mListener != null) {
-                            final int pos = holder.getAdapterPosition();
+                            final int pos = holder.getBindingAdapterPosition();
+                            if (pos < 0) {
+                                return;
+                            }
                             mListener.onDeleteClick(holder.ivPic, pos, mDataSource.get(pos).getPicUrl(),
                                 mDataSource.get(pos).getArgs());
                         }
@@ -983,7 +986,10 @@ public class ZzImageBox extends RecyclerView {
                     @Override
                     public void onClick(View v) {
                         if (mListener != null) {
-                            final int pos = holder.getAdapterPosition();
+                            final int pos = holder.getBindingAdapterPosition();
+                            if (pos < 0) {
+                                return;
+                            }
                             mListener.onImageClick(pos, mDataSource.get(pos).getPicUrl(), holder.ivPic,
                                 mDataSource.get(pos).getArgs());
                         }
@@ -993,7 +999,10 @@ public class ZzImageBox extends RecyclerView {
                     @Override
                     public boolean onLongClick(View v) {
                         if (mListener != null) {
-                            final int pos = holder.getAdapterPosition();
+                            final int pos = holder.getBindingAdapterPosition();
+                            if (pos < 0) {
+                                return true;
+                            }
                             mListener.onImageLongPress(pos, mDataSource.get(pos).getPicUrl(), holder.ivPic,
                                 mDataSource.get(pos).getArgs());
                             return true;
@@ -1002,30 +1011,6 @@ public class ZzImageBox extends RecyclerView {
                     }
                 });
             }
-        }
-        
-        private boolean showPaddingTop(ViewHolder viewHolder) {
-            int adapterPosition = viewHolder.getAdapterPosition();
-            return adapterPosition >= mOneLineImgCount;
-        }
-        
-        private boolean showPaddingBottom(ViewHolder viewHolder) {
-            int adapterPosition = viewHolder.getAdapterPosition();
-            int lineCount = getMaxCount() / mOneLineImgCount;
-            if (getMaxCount() % mOneLineImgCount != 0) {
-                lineCount++;
-            }
-            return adapterPosition < (lineCount - 1) * mOneLineImgCount;
-        }
-        
-        private boolean showPaddingLeft(ViewHolder viewHolder) {
-            int adapterPosition = viewHolder.getAdapterPosition();
-            return adapterPosition % mOneLineImgCount != 0;
-        }
-        
-        private boolean showPaddingRight(ViewHolder viewHolder) {
-            int adapterPosition = viewHolder.getAdapterPosition();
-            return (adapterPosition + 1) % mOneLineImgCount != 0;
         }
         
         private boolean needShowAddItem() {
