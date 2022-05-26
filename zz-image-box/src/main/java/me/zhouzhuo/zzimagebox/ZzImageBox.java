@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.ColorMatrixColorFilter;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -53,7 +52,6 @@ public class ZzImageBox extends RecyclerView {
     private MyAdapter mAdapter;
     private ImageLoader mImageLoader;
     private AbsOnImageClickListener mClickListener;
-    private GridSpaceItemDecoration mItemDecoration;
     
     public ZzImageBox(Context context) {
         super(context);
@@ -142,15 +140,6 @@ public class ZzImageBox extends RecyclerView {
             mAdapter.setImageLoader(sGlobalOnLineImageLoader);
         }
         setAdapter(mAdapter);
-    
-        if (mItemDecoration == null) {
-            mItemDecoration = new GridSpaceItemDecoration(mOneLineImgCount, mPadding, mPadding);
-            addItemDecoration(mItemDecoration);
-        } else {
-            mItemDecoration.setRowSpacing(mPadding);
-            mItemDecoration.setColumnSpacing(mPadding);
-            invalidateItemDecorations();
-        }
     }
     
     /**
@@ -581,13 +570,13 @@ public class ZzImageBox extends RecyclerView {
         this.mOneLineImgCount = maxSize;
         if (mAdapter != null) {
             setLayoutManager(new GridLayoutManager(getContext(), maxSize));
-            if (mItemDecoration == null) {
-                mItemDecoration = new GridSpaceItemDecoration(maxSize, mPadding, mPadding);
-                addItemDecoration(mItemDecoration);
-            } else {
-                mItemDecoration.setSpanCount(maxSize);
-                invalidateItemDecorations();
-            }
+            // if (mItemDecoration == null) {
+            //     mItemDecoration = new GridSpaceItemDecoration(maxSize, mPadding, mPadding);
+            //     addItemDecoration(mItemDecoration);
+            // } else {
+            //     mItemDecoration.setSpanCount(maxSize);
+            //     invalidateItemDecorations();
+            // }
             if (mAdapter == null) {
                 mAdapter = new MyAdapter(getContext(), getBoxWidth(), mDataSource, mImgScaleType, mOneLineImgCount, mMaxImgCount,
                     mDefaultPicId, mDeletePicId, mAddPicId, mDeletable, mAddable, mPadding, getPaddingStart(), getPaddingEnd(), mMaxLine,
@@ -664,14 +653,15 @@ public class ZzImageBox extends RecyclerView {
         this.mPadding = imagePadding / 2;
         if (mAdapter != null) {
             mAdapter.setImagePadding(this.mPadding);
-            if (mItemDecoration == null) {
-                mItemDecoration = new GridSpaceItemDecoration(mOneLineImgCount, mPadding, mPadding);
-                addItemDecoration(mItemDecoration);
-            } else {
-                mItemDecoration.setRowSpacing(mPadding);
-                mItemDecoration.setColumnSpacing(mPadding);
-                invalidateItemDecorations();
-            }
+            mAdapter.notifyDataSetChanged();
+            // if (mItemDecoration == null) {
+            //     mItemDecoration = new GridSpaceItemDecoration(mOneLineImgCount, mPadding, mPadding);
+            //     addItemDecoration(mItemDecoration);
+            // } else {
+            //     mItemDecoration.setRowSpacing(mPadding);
+            //     mItemDecoration.setColumnSpacing(mPadding);
+            //     invalidateItemDecorations();
+            // }
         }
         return this;
     }
@@ -914,11 +904,68 @@ public class ZzImageBox extends RecyclerView {
         
         @Override
         public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-            // ImageView iv = holder.itemView.findViewById(R.id.iv_pic);
             if (mPicSize > 0) {
-                ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+                MarginLayoutParams layoutParams = (MarginLayoutParams) holder.itemView.getLayoutParams();
+                int col = position % mOneLineImgCount;
+                int row = position / mOneLineImgCount;
+                
+                int totalRow = getItemCount() % mOneLineImgCount == 0 ? getItemCount() / mOneLineImgCount : getItemCount() / mOneLineImgCount + 1;
+                
+                //间距总和均分值
+                int fen = (mPadding * (mOneLineImgCount - 1)) / mOneLineImgCount;
+                
+                boolean firstRow = row == 0;
+                boolean lastRow = row == totalRow - 1;
+                boolean firstCol = col == 0;
+                boolean lastCol = col == mOneLineImgCount - 1;
+                layoutParams.leftMargin = firstCol ? 0 : (lastCol ? fen : fen / 2);
+                layoutParams.rightMargin = lastCol ? 0 : (firstCol ? fen : fen / 2);
+                layoutParams.topMargin = firstRow ? 0 : (lastRow ? fen : fen / 2);
+                layoutParams.bottomMargin = lastRow ? 0 : (firstRow ? fen : fen / 2);
+                
+                //左右间距均分修正
+                if (mOneLineImgCount > 3) {
+                    //第1个和第2个Item以及最后一个和倒数第2个Item之间的间隙比mPadding多出来的距离 / 2
+                    int left = ((fen + fen / 2) - mPadding) / 2;
+                    if (firstCol) {
+                        layoutParams.rightMargin -= left;
+                    } else if (lastCol) {
+                        layoutParams.leftMargin -= left;
+                    } else if (col == 1) {
+                        layoutParams.leftMargin -= left;
+                        layoutParams.rightMargin += left;
+                    } else if (col == mOneLineImgCount - 2) {
+                        layoutParams.rightMargin -= left;
+                        layoutParams.leftMargin += left;
+                    } else {
+                        layoutParams.leftMargin += left;
+                        layoutParams.rightMargin += left;
+                    }
+                }
+                
+                //上下间距均分修正
+                if (totalRow > 3) {
+                    //第1个和第2个Item以及最后一个和倒数第2个Item之间的间隙比mPadding多出来的距离 / 2
+                    int surplus = ((fen + fen / 2) - mPadding) / 2;
+                    if (firstRow) {
+                        layoutParams.bottomMargin -= surplus;
+                    } else if (lastRow) {
+                        layoutParams.topMargin -= surplus;
+                    } else if (row == 1) {
+                        layoutParams.topMargin -= surplus;
+                        layoutParams.bottomMargin += surplus;
+                    } else if (row == totalRow - 2) {
+                        layoutParams.bottomMargin -= surplus;
+                        layoutParams.topMargin += surplus;
+                    } else {
+                        layoutParams.topMargin += surplus;
+                        layoutParams.bottomMargin += surplus;
+                    }
+                }
+                
                 layoutParams.width = mPicSize;
                 layoutParams.height = mPicSize;
+                
                 holder.itemView.setLayoutParams(layoutParams);
             }
             ImageView ivDel = holder.itemView.findViewById(R.id.iv_delete);
@@ -1066,84 +1113,6 @@ public class ZzImageBox extends RecyclerView {
         public void setArgs(Bundle args) {
             this.args = args;
         }
-    }
-    
-    private static class GridSpaceItemDecoration extends RecyclerView.ItemDecoration {
-        
-        private int mSpanCount;//横条目数量
-        private int mRowSpacing;//行间距
-        private int mColumnSpacing;// 列间距
-        
-        /**
-         * @param spanCount     列数
-         * @param rowSpacing    行间距
-         * @param columnSpacing 列间距
-         */
-        public GridSpaceItemDecoration(int spanCount, int rowSpacing, int columnSpacing) {
-            this.mSpanCount = spanCount;
-            this.mRowSpacing = rowSpacing;
-            this.mColumnSpacing = columnSpacing;
-        }
-        
-        public void setSpanCount(int spanCount) {
-            mSpanCount = spanCount;
-        }
-        
-        public void setRowSpacing(int rowSpacing) {
-            mRowSpacing = rowSpacing;
-        }
-        
-        public void setColumnSpacing(int columnSpacing) {
-            mColumnSpacing = columnSpacing;
-        }
-        
-        @Override
-        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-            //列表中item个数
-            int itemCount = parent.getAdapter().getItemCount();
-            //列表中位置
-            int position = parent.getChildAdapterPosition(view);
-            //列数
-            int spanCount = mSpanCount;
-            
-            //左右偏移
-            //行中位置
-            int indexHorizontal = position % spanCount;
-            //纵向分割线宽度
-            int dividerWidth = mColumnSpacing;
-            //有边界  itemWidth = ( 列数 + 1 ) * 分割线宽度 / 列数
-            //无边界  itemWidth = ( 列数 - 1 ) * 分割线宽度 / 列数
-            //每个item内分割线占用的宽度,
-            // 无边框：每个item内分割线占的宽度 = ( item个数 - 1 ) * 分割线宽度 / item个数
-            // 有边框：每个item内分割线占的宽度 = ( item个数 + 1 ) * 分割线宽度 / item个数
-            int itemDividerWidth = (spanCount - 1) * dividerWidth / spanCount;
-            //无边框
-            //left = 行中位置 * ( 分割线宽度 - 每个item内分割线占用的宽度 )
-            int left = indexHorizontal * (dividerWidth - itemDividerWidth);
-            //right = 每个item内分割线占用的宽度 - left
-            int right = itemDividerWidth - left;
-            
-            //上下偏移
-            //横向分割线高度
-            int dividerHeight = mRowSpacing;
-            //无边框，最上面高度偏移0，最下面高度偏移0，其他上下各偏移分割线一半高度
-            int top = !showPaddingTop(position) ? 0 : (dividerHeight / 2);
-            int bottom = !showPaddingBottom(position, itemCount) ? 0 : (dividerHeight / 2);
-            outRect.set(left, top, right, bottom);
-        }
-        
-        private boolean showPaddingTop(int adapterPosition) {
-            return adapterPosition >= mSpanCount;
-        }
-        
-        private boolean showPaddingBottom(int adapterPosition, int itemCount) {
-            int lineCount = itemCount / mSpanCount;
-            if (itemCount % mSpanCount != 0) {
-                lineCount++;
-            }
-            return adapterPosition < (lineCount - 1) * mSpanCount;
-        }
-        
     }
     
 }

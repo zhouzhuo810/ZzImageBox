@@ -272,8 +272,7 @@
                 app:zib_img_padding="10dp"
                 app:zib_img_addable="true"
                 app:zib_img_scale_type="CENTER_CROP"
-                app:zib_max_line="1"
-                app:zib_max_img_count="5"
+                app:zib_max_line="10"
                 app:zib_one_line_img_count="3"
                 tools:itemCount="3"
                 tools:listitem="@layout/zz_image_box_item" />
