@@ -478,22 +478,6 @@ public class ZzImageBox extends RecyclerView {
         mAdapter.notifyDataSetChanged();
     }
     
-    
-    @Override
-    protected void onMeasure(int widthSpec, int heightSpec) {
-        if (mAdapter != null) {
-            final int width = LayoutManager.chooseSize(widthSpec,
-                getPaddingLeft() + getPaddingRight(),
-                ViewCompat.getMinimumWidth(this));
-            if (mAdapter.mBoxWidth != width) {
-                mAdapter.mBoxWidth = width;
-                mAdapter.setOneLineImgCount(mAdapter.mOneLineImgCount);
-                mAdapter.notifyDataSetChanged();
-            }
-        }
-        super.onMeasure(widthSpec, heightSpec);
-    }
-    
     public interface OnImageClickListener {
         
         void onImageClick(int position, String url, ImageView iv, @Nullable Bundle args);

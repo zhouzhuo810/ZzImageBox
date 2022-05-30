@@ -25,7 +25,7 @@
 
 
 ```
-    implementation 'com.github.zhouzhuo810:ZzImageBox:1.3.2'
+    implementation 'com.github.zhouzhuo810:ZzImageBox:1.3.3'
     implementation 'androidx.recyclerview:recyclerview:1.2.0' //版本自己决定
 ```
 
@@ -170,6 +170,9 @@ java:
 
 
 ### 更新日志
+
+> v1.3.3
+- 修复 onMeasure 死循环问题；
 
 > v1.3.2
 - 修复 zib_img_padding 的值过大时，图片显示不全问题；
