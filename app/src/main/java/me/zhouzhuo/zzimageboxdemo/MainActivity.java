@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onImageClick(int position, String url, ImageView iv, @Nullable Bundle args) {
                 Toast.makeText(MainActivity.this, "你点击了+" + position + "的图片:url=" + url + ", args=" + (args == null ? null : args.toString()), Toast.LENGTH_SHORT).show();
+                imageBoxAddMode.replaceImageAt(position, "https://p.ssl.qhimg.com/dm/420_627_/t01b998f20bf6fcbfd4.jpg");
             }
             
             @Override

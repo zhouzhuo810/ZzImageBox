@@ -25,7 +25,7 @@
 
 
 ```
-    implementation 'com.github.zhouzhuo810:ZzImageBox:1.3.3'
+    implementation 'com.github.zhouzhuo810:ZzImageBox:1.3.4'
     implementation 'androidx.recyclerview:recyclerview:1.2.0' //版本自己决定
 ```
 
@@ -170,6 +170,9 @@ java:
 
 
 ### 更新日志
+
+> v1.3.4
+- 支持 replaceImageAt 方法，用于替换某个位置的图片；
 
 > v1.3.3
 - 修复 onMeasure 死循环问题；

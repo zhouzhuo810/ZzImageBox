@@ -18,7 +18,6 @@ import java.util.List;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -338,6 +337,36 @@ public class ZzImageBox extends RecyclerView {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         mAdapter.onConfigurationChanged(w);
+    }
+    
+    /**
+     * 替换图片
+     *
+     * @param position 位置
+     * @param url      图片路径
+     * @return ZzImageBox
+     */
+    public ZzImageBox replaceImageAt(int position, String url) {
+        return replaceImageAt(position, url, true);
+    }
+    
+    /**
+     * 替换图片
+     *
+     * @param position 位置
+     * @param url      图片路径
+     * @param notify   是否刷新
+     * @return ZzImageBox
+     */
+    public ZzImageBox replaceImageAt(int position, String url, boolean notify) {
+        ImageEntity entity = getEntityAt(position);
+        if (entity != null) {
+            entity.setPicUrl(url);
+            if (notify) {
+                mAdapter.notifyItemChanged(position);
+            }
+        }
+        return this;
     }
     
     /**
