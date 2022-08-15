@@ -336,7 +336,17 @@ public class ZzImageBox extends RecyclerView {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mAdapter.onConfigurationChanged(w);
+        if (mAdapter != null) {
+            mAdapter.onConfigurationChanged(w);
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    if (mAdapter != null) {
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+        }
     }
     
     /**
@@ -905,7 +915,6 @@ public class ZzImageBox extends RecyclerView {
             } else {
                 this.mPicSize = 0;
             }
-            notifyDataSetChanged();
         }
         
         @NonNull
