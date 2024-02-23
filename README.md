@@ -23,9 +23,15 @@
 
 ### Gradle
 
+```
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+```
+
 
 ```
-    implementation 'com.github.zhouzhuo810:ZzImageBox:1.3.5'
+    implementation 'com.gitee.zhouzhuo0810:ZzImageBox:1.3.6'
     implementation 'androidx.recyclerview:recyclerview:1.2.0' //版本自己决定
 ```
 
@@ -33,8 +39,7 @@
 ## What does it look like?
 
 
-![zzimagebox](https://github.com/zhouzhuo810/ZzImageBox/blob/master/zz_image_box_demo.gif)
-
+![zzimagebox](https://gitee.com/zhouzhuo0810/ZzImageBox/blob/master/zz_image_box_demo.gif)
 
 
 ## How to use it ?

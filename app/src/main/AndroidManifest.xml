@@ -19,7 +19,8 @@
 
         <activity android:name="me.zhouzhuo.zzimageboxdemo.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

@@ -1,18 +1,14 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-
-//{github用户名}改为自己github的用户名
-group='com.github.zhouzhuo810'
-
+apply plugin: 'maven-publish'
 
 android {
     resourcePrefix "zz_" //随意填写
 
-    compileSdkVersion 28
+    compileSdkVersion 32
 
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 28
+        targetSdkVersion 32
         versionCode 26
         versionName "3.5"
     }
@@ -27,45 +23,31 @@ android {
         abortOnError false
         checkReleaseBuilds false
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+}
+
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.release
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = 'com.gitee.zhouzhuo0810'
+                artifactId = 'ZzImageBox'
+                version = '1.3.6'
+            }
+        }
+    }
 }
 
 dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
-}
-
-
-//...
-
-//添加下面这些才会有文档注释。
-
-// build a jar with source files
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-task javadoc(type: Javadoc) {
-    failOnError  false
-    source = android.sourceSets.main.java.sourceFiles
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    classpath += configurations.compile
-}
-
-// build a jar with javadoc
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-}
-
-task findConventions {
-    println project.getConvention()
 }
