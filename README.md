@@ -1,3 +1,7 @@
+！！！ 仓库已迁移到Gitee
+
+https://gitee.com/zhouzhuo0810/ZzImageBox
+
 # ZzImageBox
 
 :fire: A powerful image container for adding and removing images.
